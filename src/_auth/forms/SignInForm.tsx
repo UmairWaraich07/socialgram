@@ -20,7 +20,12 @@ import authService from "@/appwrite/auth";
 import { toast } from "sonner";
 
 const SignInForm = () => {
-  const { mutateAsync: loginUser, isPending: isLoggingUser } = useLoginUser();
+  const {
+    mutateAsync: loginUser,
+    isPending: isLoggingUser,
+    isError,
+    error,
+  } = useLoginUser();
   const { setIsAuthenticated, setUserData } = useUserContext();
   const navigate = useNavigate();
 
@@ -100,6 +105,11 @@ const SignInForm = () => {
               </FormItem>
             )}
           />
+
+          {isError ? (
+            <div className="text-red text-sm">{error.message}</div>
+          ) : null}
+
           <Button
             type="submit"
             className="shad-button_primary"

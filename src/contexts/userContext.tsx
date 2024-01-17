@@ -1,4 +1,4 @@
-import { IUserContextTypes } from "@/appwrite/appwrite.types";
+import { IUserContextTypes } from "@/types/index";
 import { createContext, useContext } from "react";
 
 export const INITIAL_USER = {

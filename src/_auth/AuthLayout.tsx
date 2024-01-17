@@ -2,10 +2,9 @@ import { Outlet } from "react-router-dom";
 import { Toaster } from "@/components/ui/sonner";
 
 const AuthLayout = () => {
-  // const isAuthenticated = true;
   return (
-    <div className="flex">
-      <section className="flex-center flex-1 flex-col py-10 ">
+    <div className="flex ">
+      <section className="flex-center flex-1 flex-col py-10">
         <Outlet />
       </section>
 

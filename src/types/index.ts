@@ -31,3 +31,18 @@ export type IUserContextTypes = {
   setUserData: React.Dispatch<React.SetStateAction<NewUserTypes>>;
   setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
 };
+
+export type CreatePostTypes = {
+  user: string;
+  caption: string;
+  media: string;
+  location: string;
+  tags: string[];
+};
+
+export type EditPostTypes = {
+  postId: string;
+  caption: string;
+  media: string;
+  location: string;
+};

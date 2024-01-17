@@ -65,11 +65,15 @@ const SignUpForm = () => {
       }
     } catch (error) {
       console.log(`Error on registering the user : ${error}`);
+      toast("Sign up failed. Please try again.");
       throw new Error((error as Error).message);
     }
   }
 
   // TODO: handle the registerUser.isError
+  if (registerUser.isError) {
+    console.log(registerUser.error);
+  }
 
   return (
     <Form {...form}>
@@ -147,6 +151,10 @@ const SignUpForm = () => {
               </FormItem>
             )}
           />
+
+          {registerUser.isError ? (
+            <div className="text-red text-sm">{registerUser.error.message}</div>
+          ) : null}
 
           <Button
             type="submit"
