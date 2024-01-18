@@ -8,7 +8,16 @@ import {
 import SignInForm from "./_auth/forms/SignInForm";
 import SignUpForm from "./_auth/forms/SignUpForm";
 import AuthLayout from "./_auth/AuthLayout";
-import { Home } from "./pages";
+import {
+  AllUsers,
+  CreatePost,
+  EditPost,
+  Explore,
+  Home,
+  Post,
+  Profile,
+  Saved,
+} from "./pages";
 import React from "react";
 import RootLayout from "./RootLayout";
 import "./globals.css";
@@ -22,8 +31,16 @@ const router = createBrowserRouter(
         <Route path="sign-up" element={<SignUpForm />} />
       </Route>
 
-      <Route element={<RootLayout />}>
+      {/* Private Routes */}
+      <Route path="/" element={<RootLayout />}>
         <Route index element={<Home />} />
+        <Route path="explore" element={<Explore />} />
+        <Route path="all-users" element={<AllUsers />} />
+        <Route path="saved" element={<Saved />} />
+        <Route path="create-post" element={<CreatePost />} />
+        <Route path="edit-post/:id" element={<EditPost />} />
+        <Route path="profile/:id" element={<Profile />} />
+        <Route path="post/:id" element={<Post />} />
       </Route>
     </Route>
   )

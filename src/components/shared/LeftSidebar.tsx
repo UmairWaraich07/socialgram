@@ -22,7 +22,7 @@ const LeftSidebar = () => {
     }
   };
   return (
-    <aside className="leftsidebar overflow-y-auto custom-scrollbar">
+    <aside className="leftsidebar overflow-y-auto custom-scrollbar gap-14">
       <div className="flex flex-col gap-11">
         <Link to="/">
           <Logo width={170} />
@@ -68,16 +68,15 @@ const LeftSidebar = () => {
             );
           })}
         </nav>
-
-        <Button
-          variant="ghost"
-          className="shad-button_ghost"
-          onClick={handleSignout}
-        >
-          <img src="/assets/icons/logout.svg" alt="logout" />
-          <p className="small-medium lg:base-medium">Logout</p>
-        </Button>
       </div>
+      <Button
+        variant="ghost"
+        className="shad-button_ghost"
+        onClick={handleSignout}
+      >
+        <img src="/assets/icons/logout.svg" alt="logout" />
+        <p className="small-medium lg:base-medium">Logout</p>
+      </Button>
     </aside>
   );
 };
