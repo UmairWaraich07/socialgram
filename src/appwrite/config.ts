@@ -1,6 +1,7 @@
 import config from "@/conf/conf";
 import { CreatePostTypes, EditPostTypes } from "@/types";
 import { Client, Databases, ID } from "appwrite";
+import storageService from "./storage";
 
 class ConfigService {
   client = new Client();
@@ -43,18 +44,22 @@ class ConfigService {
 
   async createPost({ user, caption, media, location, tags }: CreatePostTypes) {
     try {
-      return await this.databases.createDocument(
-        config.appwriteDatabaseId,
-        config.appwritePostsCollectionId,
-        ID.unique(),
-        {
-          user,
-          caption,
-          media,
-          location,
-          tags,
-        }
-      );
+      // upload the file to the storage
+      const file = await storageService.uploadMedia(media);
+      if (file) {
+        return await this.databases.createDocument(
+          config.appwriteDatabaseId,
+          config.appwritePostsCollectionId,
+          ID.unique(),
+          {
+            user,
+            caption,
+            media: file.$id,
+            location,
+            tags,
+          }
+        );
+      }
     } catch (error) {
       console.log(`Error on creating the post :: APPWRITE :: ${error}`);
       throw new Error((error as Error).message);

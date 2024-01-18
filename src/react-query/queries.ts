@@ -1,4 +1,4 @@
-import { loginUserTypes, registerUserTypes } from "@/appwrite/appwrite.types";
+import { loginUserTypes, registerUserTypes } from "@/types/index";
 import authService from "@/appwrite/auth";
 import { useMutation } from "@tanstack/react-query";
 
@@ -19,11 +19,5 @@ export const useLoginUser = () => {
   return useMutation({
     mutationFn: ({ email, password }: loginUserTypes) =>
       authService.loginUser({ email, password }),
-  });
-};
-
-export const useLogoutUser = () => {
-  return useMutation({
-    mutationFn: authService.logoutUser,
   });
 };

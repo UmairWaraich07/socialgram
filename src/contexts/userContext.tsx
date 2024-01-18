@@ -4,6 +4,8 @@ import { createContext, useContext } from "react";
 export const INITIAL_USER = {
   id: "",
   username: "",
+  fullname: "",
+  profilePicture: "",
   email: "",
 };
 
@@ -12,6 +14,7 @@ const initialState = {
   userData: INITIAL_USER,
   setUserData: () => {},
   setIsAuthenticated: () => {},
+  //TODO: add isLoading for good ui/ux
 };
 
 export const UserContext = createContext<IUserContextTypes>(initialState);

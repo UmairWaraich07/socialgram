@@ -1,5 +1,11 @@
 import React from "react";
 
+export type NavLinkTypes = {
+  imgURL: string;
+  route: string;
+  label: string;
+};
+
 export type registerUserTypes = {
   email: string;
   password: string;
@@ -22,6 +28,8 @@ export type createUserTypes = {
 export type NewUserTypes = {
   id: string;
   username: string;
+  fullname: string;
+  profilePicture: string;
   email: string;
 };
 
@@ -35,7 +43,7 @@ export type IUserContextTypes = {
 export type CreatePostTypes = {
   user: string;
   caption: string;
-  media: string;
+  media: File;
   location: string;
   tags: string[];
 };

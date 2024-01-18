@@ -10,7 +10,7 @@ import SignUpForm from "./_auth/forms/SignUpForm";
 import AuthLayout from "./_auth/AuthLayout";
 import { Home } from "./pages";
 import React from "react";
-import RootLayout from "./_root/RootLayout";
+import RootLayout from "./RootLayout";
 import "./globals.css";
 import { QueryProvider } from "./react-query/QueryProvider";
 
@@ -22,7 +22,7 @@ const router = createBrowserRouter(
         <Route path="sign-up" element={<SignUpForm />} />
       </Route>
 
-      <Route path="/" element={<RootLayout />}>
+      <Route element={<RootLayout />}>
         <Route index element={<Home />} />
       </Route>
     </Route>

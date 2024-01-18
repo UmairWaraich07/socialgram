@@ -1,29 +1,42 @@
 import authService from "@/appwrite/auth";
-import { INITIAL_USER, UserContext } from "@/contexts/userContext";
+import { INITIAL_USER, UserContext } from "@/contexts/UserContext";
 import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { Bottombar, LeftSidebar, Topbar } from "./components/shared";
+import { NewUserTypes } from "./types";
 
 const RootLayout = () => {
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userData, setUserData] = useState(INITIAL_USER);
+  const [userData, setUserData] = useState<NewUserTypes>(INITIAL_USER);
 
   useEffect(() => {
     try {
       const cookieFallback = localStorage.getItem("cookieFallback");
-      if (!cookieFallback) navigate("/sign-in");
+      if (
+        cookieFallback === "[]" ||
+        cookieFallback === null ||
+        cookieFallback === undefined
+      ) {
+        navigate("/sign-in");
+      }
 
       (async () => {
         const currentUser = await authService.getCurrentUser();
+        console.log({ currentUser });
         if (currentUser) {
           setUserData({
             id: currentUser.$id,
-            username: currentUser.name,
             email: currentUser.email,
+            username: currentUser.username,
+            fullname: currentUser.fullname,
+            profilePicture: currentUser.profilePicture,
           });
           setIsAuthenticated(true);
         } else {
+          setUserData(INITIAL_USER);
+          setIsAuthenticated(false);
           toast("Login failed. Try again");
         }
       })();
@@ -41,8 +54,15 @@ const RootLayout = () => {
     <UserContext.Provider
       value={{ isAuthenticated, setIsAuthenticated, userData, setUserData }}
     >
-      <h1 className="underline">Root Layout</h1>
-      <Outlet />
+      <div className="w-full md:flex">
+        <Topbar />
+        <LeftSidebar />
+        <main>
+          <Outlet />
+        </main>
+
+        <Bottombar />
+      </div>
     </UserContext.Provider>
   );
 };

@@ -61,7 +61,7 @@ class AuthService {
 
   async logoutUser() {
     try {
-      return await this.account.deleteSession("current");
+      return await this.account.deleteSessions();
     } catch (error) {
       console.log(`Error on logging out the user :: APPWRITE :: ${error}`);
       if (error instanceof Error) {
@@ -73,7 +73,11 @@ class AuthService {
 
   async getCurrentUser() {
     try {
-      return await this.account.get();
+      const user = await this.account.get();
+      if (user) {
+        return await userService.getUser(user.$id);
+      }
+      return false;
     } catch (error) {
       console.log(
         `Error on getting the current logged in user :: APPWRITE :: ${error}`

@@ -15,7 +15,7 @@ import { signinValidation } from "@/lib/validations";
 import { useLoginUser } from "@/react-query/queries";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { Link, useNavigate } from "react-router-dom";
-import { useUserContext } from "@/contexts/userContext";
+import { useUserContext } from "@/contexts/UserContext";
 import authService from "@/appwrite/auth";
 import { toast } from "sonner";
 
