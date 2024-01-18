@@ -47,7 +47,9 @@ const SignInForm = () => {
           setUserData({
             id: currentUser.$id,
             email: currentUser.email,
-            username: currentUser.name,
+            username: currentUser.username,
+            fullname: currentUser.fullname,
+            profilePicture: currentUser.profilePicture,
           });
           setIsAuthenticated(true);
 

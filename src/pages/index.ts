@@ -1,5 +1,5 @@
 import Home from "./Home";
-import Post from "./Post";
+import Post from "./PostDetails";
 import Profile from "./Profile";
 import Saved from "./Saved";
 import AllUsers from "./AllUsers";

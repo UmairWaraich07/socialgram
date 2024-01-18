@@ -36,8 +36,7 @@ const LeftSidebar = () => {
             fullname={userData.fullname}
             username={userData.username}
             profilePicture={userData.profilePicture}
-            height={12}
-            width={12}
+            width={60}
           />
           <div className="flex flex-col">
             <h4 className="body-bold">{userData.fullname}</h4>

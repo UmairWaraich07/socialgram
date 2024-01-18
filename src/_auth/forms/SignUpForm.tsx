@@ -17,7 +17,7 @@ import { useLoginUser, useRegisterUser } from "@/react-query/queries";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { toast } from "sonner";
 import authService from "@/appwrite/auth";
-import { useUserContext } from "@/contexts/userContext";
+import { useUserContext } from "@/contexts/UserContext";
 
 const SignUpForm = () => {
   const navigate = useNavigate();
@@ -56,8 +56,10 @@ const SignUpForm = () => {
       if (userData) {
         setUserData({
           id: userData.$id,
-          username: userData.name,
+          username: userData.username,
           email: userData.email,
+          fullname: userData.fullname,
+          profilePicture: userData.profilePicture,
         });
         setIsAuthenticated(true);
         form.reset();
@@ -68,11 +70,6 @@ const SignUpForm = () => {
       toast("Sign up failed. Please try again.");
       throw new Error((error as Error).message);
     }
-  }
-
-  // TODO: handle the registerUser.isError
-  if (registerUser.isError) {
-    console.log(registerUser.error);
   }
 
   return (

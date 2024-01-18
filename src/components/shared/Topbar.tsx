@@ -39,8 +39,7 @@ const Topbar = () => {
               fullname={userData.fullname}
               username={userData.username}
               profilePicture={userData.profilePicture}
-              height={8}
-              width={8}
+              width={36}
             />
           </Link>
         </div>

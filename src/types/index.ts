@@ -43,7 +43,7 @@ export type IUserContextTypes = {
 export type CreatePostTypes = {
   user: string;
   caption: string;
-  media: File;
+  media: string;
   location: string;
   tags: string[];
 };

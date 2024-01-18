@@ -1,7 +1,6 @@
 import config from "@/conf/conf";
 import { CreatePostTypes, EditPostTypes } from "@/types";
 import { Client, Databases, ID } from "appwrite";
-import storageService from "./storage";
 
 class ConfigService {
   client = new Client();
@@ -11,22 +10,6 @@ class ConfigService {
       .setEndpoint(config.appwriteUrl)
       .setProject(config.appwriteProjectId);
     this.databases = new Databases(this.client);
-  }
-
-  async getPosts() {
-    try {
-      const posts = await this.databases.listDocuments(
-        config.appwriteDatabaseId,
-        config.appwritePostsCollectionId
-      );
-      if (posts) {
-        return posts.documents[0];
-      }
-      return false;
-    } catch (error) {
-      console.log(`Error on getting all the posts :: APPWRITE :: ${error}`);
-      throw new Error((error as Error).message);
-    }
   }
 
   async getPost(postId: string) {
@@ -44,22 +27,18 @@ class ConfigService {
 
   async createPost({ user, caption, media, location, tags }: CreatePostTypes) {
     try {
-      // upload the file to the storage
-      const file = await storageService.uploadMedia(media);
-      if (file) {
-        return await this.databases.createDocument(
-          config.appwriteDatabaseId,
-          config.appwritePostsCollectionId,
-          ID.unique(),
-          {
-            user,
-            caption,
-            media: file.$id,
-            location,
-            tags,
-          }
-        );
-      }
+      return await this.databases.createDocument(
+        config.appwriteDatabaseId,
+        config.appwritePostsCollectionId,
+        ID.unique(),
+        {
+          user,
+          caption,
+          media,
+          location,
+          tags,
+        }
+      );
     } catch (error) {
       console.log(`Error on creating the post :: APPWRITE :: ${error}`);
       throw new Error((error as Error).message);
@@ -95,6 +74,21 @@ class ConfigService {
       return false;
     } catch (error) {
       console.log(`Error on deleting the post :: APPWRITE :: ${error}`);
+      throw new Error((error as Error).message);
+    }
+  }
+
+  async getRecentPosts() {
+    try {
+      const recentPosts = await this.databases.listDocuments(
+        config.appwriteDatabaseId,
+        config.appwritePostsCollectionId
+      );
+      console.log({ recentPosts });
+      if (!recentPosts) throw new Error("Failed to get Recent Posts");
+      return recentPosts;
+    } catch (error) {
+      console.log(`Error on getting the recent posts :: APPWRITE :: ${error}`);
       throw new Error((error as Error).message);
     }
   }
