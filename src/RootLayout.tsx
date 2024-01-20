@@ -2,7 +2,7 @@ import authService from "@/appwrite/auth";
 import { INITIAL_USER, UserContext } from "@/contexts/UserContext";
 import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import { toast } from "sonner";
+import { Toaster, toast } from "sonner";
 import { Bottombar, LeftSidebar, Topbar } from "./components/shared";
 import { NewUserTypes } from "./types";
 
@@ -10,7 +10,7 @@ const RootLayout = () => {
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userData, setUserData] = useState<NewUserTypes>(INITIAL_USER);
-
+  console.log({ userData });
   useEffect(() => {
     try {
       const cookieFallback = localStorage.getItem("cookieFallback");
@@ -24,7 +24,6 @@ const RootLayout = () => {
 
       (async () => {
         const currentUser = await authService.getCurrentUser();
-        console.log({ currentUser });
         if (currentUser) {
           setUserData({
             id: currentUser.$id,
@@ -32,6 +31,7 @@ const RootLayout = () => {
             username: currentUser.username,
             fullname: currentUser.fullname,
             profilePicture: currentUser.profilePicture,
+            savedPosts: currentUser.savedPosts,
           });
           setIsAuthenticated(true);
         } else {
@@ -62,6 +62,7 @@ const RootLayout = () => {
         </main>
 
         <Bottombar />
+        <Toaster />
       </div>
     </UserContext.Provider>
   );

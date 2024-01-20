@@ -1,3 +1,4 @@
+import { Models } from "appwrite";
 import React from "react";
 
 export type NavLinkTypes = {
@@ -31,6 +32,7 @@ export type NewUserTypes = {
   fullname: string;
   profilePicture: string;
   email: string;
+  savedPosts: Models.Document[];
 };
 
 export type IUserContextTypes = {
@@ -53,4 +55,15 @@ export type EditPostTypes = {
   caption: string;
   media: string;
   location: string;
+};
+
+export type LikePostTypes = {
+  userId: string;
+  postId: string;
+};
+
+export type SavePostTypes = {
+  userId: string;
+  postId: string;
+  savedPosts: Models.Document[];
 };

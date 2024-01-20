@@ -5,5 +5,17 @@ import LeftSidebar from "./LeftSidebar";
 import Avatar from "./Avatar";
 import PostForm from "./form/PostForm";
 import FileUploader from "./form/FileUploader";
+import PostCard from "./PostCard";
+import PostStats from "./PostStats";
 
-export { Topbar, LeftSidebar, Bottombar, Logo, Avatar, PostForm, FileUploader };
+export {
+  Topbar,
+  LeftSidebar,
+  Bottombar,
+  Logo,
+  Avatar,
+  PostForm,
+  FileUploader,
+  PostCard,
+  PostStats,
+};

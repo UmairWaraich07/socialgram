@@ -1,8 +1,11 @@
 import { Loader } from "@/components/Icons";
+import { PostCard } from "@/components/shared";
 import { useGetRecentPosts } from "@/react-query/queries";
+import { Models } from "appwrite";
 
 const Home = () => {
   const { data: posts, isPending: isLoadingPosts } = useGetRecentPosts();
+
   return (
     <div className="w-full">
       <div className="common-container">
@@ -11,11 +14,13 @@ const Home = () => {
           {isLoadingPosts ? (
             <Loader width={40} height={40} />
           ) : (
-            <div>
-              {posts?.documents.map((post) => (
-                <p>{post.caption}</p>
+            <ul className="flex flex-col flex-1 gap-9 w-full">
+              {posts?.documents?.map((post: Models.Document) => (
+                <li key={post.$id} className="flex justify-center w-full">
+                  <PostCard post={post} />
+                </li>
               ))}
-            </div>
+            </ul>
           )}
         </div>
       </div>
