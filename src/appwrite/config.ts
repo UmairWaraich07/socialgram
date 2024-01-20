@@ -1,6 +1,8 @@
 import config from "@/conf/conf";
 import {
+  CommentPostTypes,
   CreatePostTypes,
+  EditCommentTypes,
   EditPostTypes,
   LikePostTypes,
   SavePostTypes,
@@ -50,9 +52,9 @@ class ConfigService {
     }
   }
 
-  async editPost({ postId, caption, media, location }: EditPostTypes) {
+  async editPost({ postId, caption, media, location, tags }: EditPostTypes) {
     try {
-      await this.databases.updateDocument(
+      return await this.databases.updateDocument(
         config.appwriteDatabaseId,
         config.appwritePostsCollectionId,
         postId,
@@ -60,6 +62,7 @@ class ConfigService {
           caption,
           media,
           location,
+          tags,
         }
       );
     } catch (error) {
@@ -98,6 +101,7 @@ class ConfigService {
     }
   }
 
+  // ** POST LIKES ** //
   async getLikes(postId: string) {
     try {
       const likes = await this.databases.listDocuments(
@@ -106,29 +110,12 @@ class ConfigService {
         [Query.equal("post", postId)]
       );
       if (likes) {
-        return likes.total;
+        return likes;
+      } else {
+        throw new Error("Failed to get post likes!");
       }
     } catch (error) {
       console.log(`Error on getting the post Likes :: APPWRITE :: ${error}`);
-      throw new Error((error as Error).message);
-    }
-  }
-  async checkLiked({ postId, userId }: LikePostTypes) {
-    try {
-      const isLiked = await this.databases.listDocuments(
-        config.appwriteDatabaseId,
-        config.appwriteLikesCollectionId,
-        [Query.equal("post", postId), Query.equal("user", userId)]
-      );
-      // console.log({ isLiked });
-      if (isLiked.total > 0) {
-        return isLiked.documents[0].$id;
-      }
-      return "";
-    } catch (error) {
-      console.log(
-        `Error on checking the user Like to the POST :: APPWRITE :: ${error}`
-      );
       throw new Error((error as Error).message);
     }
   }
@@ -153,18 +140,15 @@ class ConfigService {
       return false;
     }
   }
-  async deleteLike({ postId, userId }: LikePostTypes) {
+  async deleteLike(deleteRecordId: string) {
     try {
-      const likedPostId = await this.checkLiked({ postId, userId });
-      if (likedPostId) {
-        const removedLike = await this.databases.deleteDocument(
-          config.appwriteDatabaseId,
-          config.appwriteLikesCollectionId,
-          likedPostId
-        );
-        if (!removedLike) return false;
-        return true;
-      }
+      const response = await this.databases.deleteDocument(
+        config.appwriteDatabaseId,
+        config.appwriteLikesCollectionId,
+        deleteRecordId
+      );
+      if (!response) return false;
+      return true;
     } catch (error) {
       console.log(
         `Error on deleting the like of the POST :: APPWRITE :: ${error}`
@@ -175,8 +159,6 @@ class ConfigService {
 
   async addToSaved({ userId, postId, savedPosts }: SavePostTypes) {
     try {
-      // const user = await userService.getUser(userId);
-      // console.log(user.savedPosts);
       if (savedPosts) {
         const session = await this.databases.updateDocument(
           config.appwriteDatabaseId,
@@ -186,7 +168,6 @@ class ConfigService {
             savedPosts: [...savedPosts, postId],
           }
         );
-        console.log({ session });
         if (!session) return false;
         return session.savedPosts;
       } else {
@@ -227,6 +208,80 @@ class ConfigService {
         `Error on adding the post to the saved :: APPWRITE :: ${error}`
       );
       return false;
+    }
+  }
+
+  // ** COMMENTS ** //
+  async getPostComments(postId: string) {
+    try {
+      const comments = await this.databases.listDocuments(
+        config.appwriteDatabaseId,
+        config.appwriteCommentsCollectionId,
+        [Query.equal("post", postId)]
+      );
+      if (!comments) throw new Error("Failed to fetch comments of this POST!");
+      return comments;
+    } catch (error) {
+      console.log(`Error on getting the post comment :: APPWRITE :: ${error}`);
+      throw new Error((error as Error).message);
+    }
+  }
+
+  async addComment({ text, postId, userId }: CommentPostTypes) {
+    try {
+      const newComment = await this.databases.createDocument(
+        config.appwriteDatabaseId,
+        config.appwriteCommentsCollectionId,
+        ID.unique(),
+        {
+          text,
+          post: postId,
+          user: userId,
+        }
+      );
+      if (!newComment) return {};
+      return newComment;
+    } catch (error) {
+      console.log(
+        `Error on adding the comment to the POST :: APPWRITE :: ${error}`
+      );
+      throw new Error((error as Error).message);
+    }
+  }
+  async deleteComment(commentId: string) {
+    try {
+      const response = await this.databases.deleteDocument(
+        config.appwriteDatabaseId,
+        config.appwriteCommentsCollectionId,
+        commentId
+      );
+      if (!response) return false;
+      return true;
+    } catch (error) {
+      console.log(
+        `Error on deleting the comment of the POST :: APPWRITE :: ${error}`
+      );
+      return false;
+    }
+  }
+
+  async editComment({ commentId, text }: EditCommentTypes) {
+    try {
+      const response = await this.databases.updateDocument(
+        config.appwriteDatabaseId,
+        config.appwriteCommentsCollectionId,
+        commentId,
+        {
+          text,
+        }
+      );
+      if (!response) return false;
+      return true;
+    } catch (error) {
+      console.log(
+        `Error on editing the comment of the POST :: APPWRITE :: ${error}`
+      );
+      throw new Error((error as Error).message);
     }
   }
 }

@@ -55,6 +55,7 @@ export type EditPostTypes = {
   caption: string;
   media: string;
   location: string;
+  tags: string[];
 };
 
 export type LikePostTypes = {
@@ -66,4 +67,21 @@ export type SavePostTypes = {
   userId: string;
   postId: string;
   savedPosts: Models.Document[];
+};
+
+export type CommentPostTypes = {
+  text: string;
+  postId: string;
+  userId: string;
+};
+
+export type EditCommentTypes = {
+  commentId: string;
+  text: string;
+  postId?: string;
+};
+
+export type DeleteCommentTypes = {
+  commentId: string;
+  postId: string;
 };

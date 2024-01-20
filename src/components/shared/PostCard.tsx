@@ -1,6 +1,6 @@
 import { Models } from "appwrite";
 import { Link } from "react-router-dom";
-import { Avatar, PostStats } from ".";
+import { Avatar, PostComment, PostStats } from ".";
 import { timeAgo } from "@/lib/utils";
 import { useUserContext } from "@/contexts/UserContext";
 import storageService from "@/appwrite/storage";
@@ -76,6 +76,7 @@ const PostCard = ({ post }: PostCardProps) => {
       </Link>
 
       <PostStats postId={post.$id} userId={userData.id} />
+      <PostComment postId={post.$id} userId={userData.id} />
     </div>
   );
 };

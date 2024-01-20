@@ -32,4 +32,16 @@ export const timeAgo = (dateString: string): string => {
   }
 };
 
+export function parseTags(inputString: string): string[] {
+  // Split the input string by commas
+  const tagsArray: string[] = inputString.split(",");
+
+  // Map over the array to trim whitespace and convert to lowercase
+  const formattedTags: string[] = tagsArray.map((tag) =>
+    tag.trim().toLowerCase()
+  );
+
+  return formattedTags;
+}
+
 // Example usage

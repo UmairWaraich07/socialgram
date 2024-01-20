@@ -7,6 +7,7 @@ import PostForm from "./form/PostForm";
 import FileUploader from "./form/FileUploader";
 import PostCard from "./PostCard";
 import PostStats from "./PostStats";
+import PostComment from "./PostComment";
 
 export {
   Topbar,
@@ -18,4 +19,5 @@ export {
   FileUploader,
   PostCard,
   PostStats,
+  PostComment,
 };

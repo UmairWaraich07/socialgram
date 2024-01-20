@@ -1,3 +1,4 @@
+import storageService from "@/appwrite/storage";
 import { Button } from "@/components/ui/button";
 import { useCallback, useState } from "react";
 import { FileWithPath, useDropzone } from "react-dropzone";
@@ -11,13 +12,13 @@ export default function FileUploader({
   fieldChange,
   mediaUrl,
 }: FileUploaderProps) {
-  const [fileUrl, setFileUrl] = useState<string>(mediaUrl);
-  const [file, setFile] = useState<File[]>([]);
+  const [fileUrl, setFileUrl] = useState(
+    String(storageService.getMediaPreview(mediaUrl))
+  );
 
   const onDrop = useCallback(
     (acceptedFiles: FileWithPath[]) => {
       // Do something with the files
-      setFile(acceptedFiles);
       fieldChange(acceptedFiles);
       setFileUrl(URL.createObjectURL(acceptedFiles[0]));
     },

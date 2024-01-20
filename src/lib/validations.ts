@@ -33,3 +33,7 @@ export const postFormValidation = z.object({
   location: z.string().min(2).max(20).trim(),
   tags: z.string().toLowerCase(),
 });
+
+export const postCommentValidation = z.object({
+  comment: z.string().min(1, { message: "Comment cannot be empty!" }).max(220),
+});

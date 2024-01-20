@@ -1,5 +1,9 @@
 import {
+  CommentPostTypes,
   CreatePostTypes,
+  DeleteCommentTypes,
+  EditCommentTypes,
+  EditPostTypes,
   LikePostTypes,
   SavePostTypes,
   loginUserTypes,
@@ -30,6 +34,8 @@ export const useLoginUser = () => {
   });
 };
 
+// ** POST QUERIES ** //
+
 export const useCreatePost = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -51,17 +57,32 @@ export const useGetRecentPosts = () => {
   });
 };
 
+export const useGetPost = (postId: string) => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_POST, postId],
+    queryFn: () => configService.getPost(postId),
+  });
+};
+
+export const useEditPost = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ postId, caption, media, location, tags }: EditPostTypes) =>
+      configService.editPost({ postId, caption, media, location, tags }),
+    onSuccess: (data, variables) => {
+      // queryClient.invalidateQueries({
+      //   queryKey: [QUERY_KEYS.GET_RECENT_POSTS],
+      // });
+      queryClient.setQueryData([QUERY_KEYS.GET_POST, variables.postId], data);
+    },
+  });
+};
+
 export const useGetPostLikes = (postId: string) => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_POST_LIKES, postId],
     queryFn: () => configService.getLikes(postId),
-  });
-};
-
-export const useCheckLiked = ({ postId, userId }: LikePostTypes) => {
-  return useQuery({
-    queryKey: [QUERY_KEYS.GET_CHECK_LIKED, postId, userId],
-    queryFn: () => configService.checkLiked({ postId, userId }),
+    enabled: !!postId,
   });
 };
 
@@ -81,8 +102,8 @@ export const useAddLike = () => {
 export const useDeleteLike = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ postId, userId }: LikePostTypes) =>
-      configService.deleteLike({ postId, userId }),
+    mutationFn: ({ likeRecordId }: { likeRecordId: string; postId: string }) =>
+      configService.deleteLike(likeRecordId),
     onSuccess: (data, variables) => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_POST_LIKES, variables.postId],
@@ -102,5 +123,53 @@ export const useRemoveFromSaved = () => {
   return useMutation({
     mutationFn: ({ userId, postId, savedPosts }: SavePostTypes) =>
       configService.removeFromSaved({ userId, postId, savedPosts }),
+  });
+};
+
+export const useGetPostComments = (postId: string) => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_POST_COMMENTS, postId],
+    queryFn: () => configService.getPostComments(postId),
+    enabled: !!postId,
+  });
+};
+
+export const useAddComment = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ text, postId, userId }: CommentPostTypes) =>
+      configService.addComment({ text, postId, userId }),
+    onSuccess: (data, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_POST_COMMENTS, variables.postId],
+      });
+    },
+  });
+};
+
+export const useDeleteComment = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ commentId }: DeleteCommentTypes) =>
+      configService.deleteComment(commentId),
+    onSuccess: (data, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_POST_COMMENTS, variables.postId],
+      });
+    },
+  });
+};
+
+export const useEditComment = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ commentId, text }: EditCommentTypes) =>
+      configService.editComment({ commentId, text }),
+    onSuccess: (data, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_POST_COMMENTS, variables.postId],
+      });
+    },
   });
 };
