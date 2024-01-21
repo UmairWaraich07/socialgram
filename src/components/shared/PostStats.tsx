@@ -13,9 +13,10 @@ import { toast } from "sonner";
 interface PostStatsProps {
   postId: string;
   userId: string;
+  totalComments?: number;
 }
 
-const PostStats = ({ postId, userId }: PostStatsProps) => {
+const PostStats = ({ postId, userId, totalComments }: PostStatsProps) => {
   const [isSaved, setIsSaved] = useState(false);
   const { userData, setUserData } = useUserContext();
   const { data: likes } = useGetPostLikes(postId);
@@ -40,6 +41,7 @@ const PostStats = ({ postId, userId }: PostStatsProps) => {
       );
       const likeRecordId = foundRecord ? foundRecord.$id : "";
       // delete the document with this user and post Id
+      setIsLiked(false);
       const res = deleteLike({ likeRecordId, postId });
       if (!res) {
         setIsLiked(true);
@@ -50,6 +52,7 @@ const PostStats = ({ postId, userId }: PostStatsProps) => {
       }
     } else {
       // add the doucment with this user and postId
+      setIsLiked(true);
       const res = await addLike({ postId, userId });
       if (!res) {
         setIsLiked(false);
@@ -65,6 +68,7 @@ const PostStats = ({ postId, userId }: PostStatsProps) => {
     const savedPosts = userData.savedPosts;
     if (isSaved) {
       // remove the post from the savedPosts of the user
+      setIsSaved(false);
       const res = await removeFromSaved({
         userId,
         postId,
@@ -83,6 +87,7 @@ const PostStats = ({ postId, userId }: PostStatsProps) => {
       }
     } else {
       // add the post to the savedPosts of the user
+      setIsSaved(true);
       const res = await addToSaved({
         userId,
         postId,
@@ -118,8 +123,16 @@ const PostStats = ({ postId, userId }: PostStatsProps) => {
           />
           <p className="small-medium lg:base-medium">{likes?.total}</p>
         </div>
-        <Link to={`/post/${postId}`}>
-          <img src="/assets/icons/comment.svg" />
+        <Link to={`/post/${postId}`} className="flex items-center gap-2">
+          <img
+            src="/assets/icons/comment.svg"
+            alt="comments"
+            width={20}
+            height={20}
+          />
+          {totalComments && (
+            <p className="small-medium lg:base-medium">{totalComments}</p>
+          )}
         </Link>
       </div>
 

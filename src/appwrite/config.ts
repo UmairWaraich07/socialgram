@@ -217,7 +217,11 @@ class ConfigService {
       const comments = await this.databases.listDocuments(
         config.appwriteDatabaseId,
         config.appwriteCommentsCollectionId,
-        [Query.equal("post", postId)]
+        [
+          Query.equal("post", postId),
+          Query.orderDesc("$createdAt"),
+          Query.limit(10),
+        ]
       );
       if (!comments) throw new Error("Failed to fetch comments of this POST!");
       return comments;

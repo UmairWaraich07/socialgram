@@ -126,6 +126,8 @@ export const useRemoveFromSaved = () => {
   });
 };
 
+// ** POST COMMENT QUERIES ** //
+
 export const useGetPostComments = (postId: string) => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_POST_COMMENTS, postId],

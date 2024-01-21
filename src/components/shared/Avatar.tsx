@@ -14,7 +14,7 @@ const Avatar = ({
   width = 32,
 }: AvatarProps) => {
   return (
-    <div className={` rounded-full bg-light-3`}>
+    <div className={`w-[${width}px] rounded-full`}>
       {profilePicture ? (
         <img
           src={`${storageService.getMediaPreview(profilePicture)}`}

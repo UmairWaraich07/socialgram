@@ -31,6 +31,32 @@ export const timeAgo = (dateString: string): string => {
     return `${days} days ago`;
   }
 };
+export const timeAgoComments = (dateString: string): string => {
+  const currentDate = new Date();
+  const inputDate = new Date(dateString);
+
+  const timeDifference = currentDate.getTime() - inputDate.getTime();
+  const seconds = Math.floor(timeDifference / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
+
+  if (seconds < 60) {
+    return `${seconds}s ago`;
+  } else if (minutes === 1) {
+    return "1m ago";
+  } else if (minutes < 60) {
+    return `${minutes}m ago`;
+  } else if (hours === 1) {
+    return "1h ago";
+  } else if (hours < 24) {
+    return `${hours}h ago`;
+  } else if (days === 1) {
+    return "1h ago";
+  } else {
+    return `${days}h ago`;
+  }
+};
 
 export function parseTags(inputString: string): string[] {
   // Split the input string by commas

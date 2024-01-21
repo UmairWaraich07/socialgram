@@ -20,9 +20,14 @@ import { Link } from "react-router-dom";
 interface PostCommentProps {
   postId: string;
   userId: string;
+  showNewComment?: boolean;
 }
 
-const PostComment = ({ postId, userId }: PostCommentProps) => {
+const PostComment = ({
+  postId,
+  userId,
+  showNewComment = true,
+}: PostCommentProps) => {
   const [newComment, setNewComment] = useState({});
   const { mutateAsync: addComment, isPending: isAddingComment } =
     useAddComment();
@@ -49,8 +54,8 @@ const PostComment = ({ postId, userId }: PostCommentProps) => {
     }
   }
   return (
-    <div className="mt-3">
-      {Object.keys(newComment).length > 0 && (
+    <div className="">
+      {Object.keys(newComment).length > 0 && showNewComment && (
         <div className="flex items-center gap-3 ">
           <Link to={`/profile/${userId}`} className="font-medium">
             {newComment?.user.username}

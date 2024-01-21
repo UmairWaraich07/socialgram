@@ -25,7 +25,7 @@ const PostCard = ({ post }: PostCardProps) => {
           </Link>
 
           <div className="flex flex-col">
-            <p className="base-medium lg:body-bold text-light-1">
+            <p className="base-medium lg:body-bold text-light-1 cursor-pointer">
               {post.user.fullname}
             </p>
             <div className="flex-center gap-2 text-light-3">
@@ -55,8 +55,8 @@ const PostCard = ({ post }: PostCardProps) => {
 
       <Link to={`/post/${post.$id}`}>
         <div className="small-medium lg:base-medium py-5">
-          <p>{post.caption}</p>
-          <ul className="flex gap-2 mt-2">
+          <p className="line-clamp-1">{post.caption}</p>
+          <ul className="flex gap-2 mt-2 line-clamp-2">
             {post.tags.map((tag: string, index: number) => (
               <li
                 key={`${tag}-${index}`}
