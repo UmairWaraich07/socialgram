@@ -277,6 +277,7 @@ class ConfigService {
         commentId,
         {
           text,
+          isEdited: true,
         }
       );
       if (!response) return false;

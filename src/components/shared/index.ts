@@ -9,6 +9,7 @@ import PostCard from "./PostCard";
 import PostStats from "./PostStats";
 import PostComment from "./PostComment";
 import PostCommentsSection from "./PostCommentsSection";
+import EditableComment from "./EditableComment";
 
 export {
   Topbar,
@@ -22,4 +23,5 @@ export {
   PostStats,
   PostComment,
   PostCommentsSection,
+  EditableComment,
 };

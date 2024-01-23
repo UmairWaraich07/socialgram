@@ -1,6 +1,6 @@
 import { Models } from "appwrite";
 import { Link } from "react-router-dom";
-import { Avatar } from ".";
+import { Avatar, EditableComment } from ".";
 import { Loader } from "../Icons";
 import { timeAgoComments } from "@/lib/utils";
 
@@ -26,20 +26,18 @@ const PostCommentsSection = ({ comments }: PostCommentsSectionProps) => {
                   width={32}
                 />
               </Link>
-              <div className="flex flex-col">
-                <div className="flex gap-2">
-                  <Link
-                    to={`/profile/${comment.user.$id}`}
-                    className="font-medium"
-                  >
-                    {comment.user.username}
-                  </Link>
-                  <p className="text-sm text-light-2">{comment.text}</p>
+              <div className="flex flex-col w-full">
+                <EditableComment comment={comment} />
+                <div className="flex items-center gap-3">
+                  <p className="tiny-medium lg:text-xs text-light-2/60">
+                    {timeAgoComments(comment.$createdAt)}
+                  </p>
+                  {comment.isEdited && (
+                    <p className="tiny-medium lg:text-xs text-light-2/70">
+                      Edited
+                    </p>
+                  )}
                 </div>
-
-                <p className="tiny-medium lg:text-xs text-light-2/60">
-                  {timeAgoComments(comment.$createdAt)}
-                </p>
               </div>
             </div>
           ))}
