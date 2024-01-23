@@ -12,10 +12,13 @@ import {
   AllUsers,
   CreatePost,
   EditPost,
+  EditProfile,
   Explore,
   Home,
+  LikedPosts,
   Post,
   Profile,
+  ProfilePosts,
   Saved,
 } from "./pages";
 import React from "react";
@@ -39,7 +42,11 @@ const router = createBrowserRouter(
         <Route path="saved" element={<Saved />} />
         <Route path="create-post" element={<CreatePost />} />
         <Route path="edit-post/:id" element={<EditPost />} />
-        <Route path="profile/:id" element={<Profile />} />
+        <Route path="profile/:id" element={<Profile />}>
+          <Route index element={<ProfilePosts />} />
+          <Route path="liked-posts" element={<LikedPosts />} />
+        </Route>
+        <Route path="edit-profile/:id" element={<EditProfile />} />
         <Route path="post/:id" element={<Post />} />
       </Route>
     </Route>

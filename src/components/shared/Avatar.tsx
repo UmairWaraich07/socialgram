@@ -5,6 +5,7 @@ interface AvatarProps {
   username: string;
   profilePicture: string;
   width?: number;
+  className?: string;
 }
 
 const Avatar = ({
@@ -12,9 +13,10 @@ const Avatar = ({
   username,
   profilePicture,
   width = 32,
+  className,
 }: AvatarProps) => {
   return (
-    <div className={`w-[${width}px] rounded-full`}>
+    <div className={`w-[${width}px] ${className} rounded-full`}>
       {profilePicture ? (
         <img
           src={`${storageService.getMediaPreview(profilePicture)}`}
@@ -24,7 +26,7 @@ const Avatar = ({
         <img
           src={`https://ui-avatars.com/api/?name=${fullname}&background=a0a0a0&color=ffffff&rounded=true&bold=true&size=${width}`}
           alt={`Avatar for ${username}`}
-          className=""
+          className="w-full"
         />
       )}
     </div>

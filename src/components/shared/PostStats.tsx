@@ -108,7 +108,7 @@ const PostStats = ({ postId, userId, totalComments }: PostStatsProps) => {
   };
 
   return (
-    <div className={`flex justify-between items-center z-20 `}>
+    <div className={`w-full flex justify-between gap-2 items-center z-20 `}>
       <div className="flex items-center gap-4">
         <div className="flex gap-2">
           <img

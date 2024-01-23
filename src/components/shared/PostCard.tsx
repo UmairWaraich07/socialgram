@@ -24,7 +24,10 @@ const PostCard = ({ post }: PostCardProps) => {
             />
           </Link>
 
-          <div className="flex flex-col">
+          <Link
+            to={`/profile/${post.user.$id}`}
+            className="flex flex-col cursor-pointer"
+          >
             <p className="base-medium lg:body-bold text-light-1 cursor-pointer">
               {post.user.fullname}
             </p>
@@ -37,7 +40,7 @@ const PostCard = ({ post }: PostCardProps) => {
                 {post.location}
               </p>
             </div>
-          </div>
+          </Link>
         </div>
 
         {/* ONLY show the edit post to the creator of the post */}

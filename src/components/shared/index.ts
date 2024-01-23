@@ -10,6 +10,7 @@ import PostStats from "./PostStats";
 import PostComment from "./PostComment";
 import PostCommentsSection from "./PostCommentsSection";
 import EditableComment from "./EditableComment";
+import GridPostsList from "./GridPostsList";
 
 export {
   Topbar,
@@ -24,4 +25,5 @@ export {
   PostComment,
   PostCommentsSection,
   EditableComment,
+  GridPostsList,
 };

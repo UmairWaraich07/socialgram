@@ -38,9 +38,9 @@ const LeftSidebar = () => {
             profilePicture={userData.profilePicture}
             width={60}
           />
-          <div className="flex flex-col">
-            <h4 className="body-bold">{userData.fullname}</h4>
-            <p className="small-regular">@{userData.username}</p>
+          <div className="flex flex-col cursor-pointer">
+            <h4 className="body-bold cursor-pointer">{userData.fullname}</h4>
+            <p className="small-regular cursor-pointer">@{userData.username}</p>
           </div>
         </Link>
 

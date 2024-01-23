@@ -13,6 +13,7 @@ import authService from "@/appwrite/auth";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { QUERY_KEYS } from "./queryKeys";
 import configService from "@/appwrite/config";
+import userService from "@/appwrite/user";
 
 // ** AUTH QUERIES ** //
 export const useRegisterUser = () => {
@@ -173,5 +174,14 @@ export const useEditComment = () => {
         queryKey: [QUERY_KEYS.GET_POST_COMMENTS, variables.postId],
       });
     },
+  });
+};
+
+// ** USER QUERIES ** //
+
+export const useGetUser = (accountId: string | "") => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_USERS, accountId],
+    queryFn: () => userService.getUser(accountId),
   });
 };
