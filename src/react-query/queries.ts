@@ -6,6 +6,7 @@ import {
   EditPostTypes,
   LikePostTypes,
   SavePostTypes,
+  UpdateUserTypes,
   loginUserTypes,
   registerUserTypes,
 } from "@/types/index";
@@ -62,6 +63,7 @@ export const useGetPost = (postId: string) => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_POST, postId],
     queryFn: () => configService.getPost(postId),
+    enabled: !!postId,
   });
 };
 
@@ -183,5 +185,46 @@ export const useGetUser = (accountId: string | "") => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_USERS, accountId],
     queryFn: () => userService.getUser(accountId),
+    enabled: !!accountId,
+  });
+};
+
+export const useGetUserLikedPosts = (userId: string) => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_USER_LIKED_POSTS],
+    queryFn: () => userService.getUserLikedPosts(userId),
+    enabled: !!userId,
+  });
+};
+
+export const useUpdateUserProfile = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({
+      userId,
+      fullname,
+      username,
+      bio,
+      profilePicture,
+    }: UpdateUserTypes) =>
+      userService.updateUserProfile({
+        userId,
+        fullname,
+        username,
+        bio,
+        profilePicture,
+      }),
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_USERS, variables.userId],
+      });
+    },
+  });
+};
+
+export const useGetCurrentUser = () => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_CURRENT_USER],
+    queryFn: () => authService.getCurrentUser(),
   });
 };

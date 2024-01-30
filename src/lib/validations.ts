@@ -37,3 +37,17 @@ export const postFormValidation = z.object({
 export const postCommentValidation = z.object({
   comment: z.string().min(1, { message: "Comment cannot be empty!" }).max(220),
 });
+
+export const editProfileValidation = z.object({
+  profilePicture: z.union([z.custom<File[]>(), z.string()]), // Allow file or string
+  fullname: z
+    .string()
+    .min(3, { message: "Name must be at least 3 characters." })
+    .max(50),
+  username: z
+    .string()
+    .min(3, { message: "Username must be at least 3 characters." })
+    .max(50)
+    .toLowerCase(),
+  bio: z.string().max(220),
+});

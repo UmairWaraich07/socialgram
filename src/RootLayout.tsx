@@ -3,15 +3,19 @@ import { INITIAL_USER, UserContext } from "@/contexts/UserContext";
 import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { Toaster, toast } from "sonner";
-import { Bottombar, LeftSidebar, Topbar } from "./components/shared";
+import { Bottombar, LeftSidebar, Logo, Topbar } from "./components/shared";
 import { NewUserTypes } from "./types";
+import { Loader } from "./components/Icons";
 
 const RootLayout = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userData, setUserData] = useState<NewUserTypes>(INITIAL_USER);
   console.log({ userData });
+
   useEffect(() => {
+    setIsLoading(true);
     try {
       const cookieFallback = localStorage.getItem("cookieFallback");
       if (
@@ -31,6 +35,7 @@ const RootLayout = () => {
             username: currentUser.username,
             fullname: currentUser.fullname,
             profilePicture: currentUser.profilePicture,
+            bio: currentUser.bio,
             savedPosts: currentUser.savedPosts,
           });
           setIsAuthenticated(true);
@@ -45,12 +50,19 @@ const RootLayout = () => {
         `Error on getting the current logged in user :: APPWRITE :: ${error}`
       );
       throw new Error((error as Error).message);
+    } finally {
+      setIsLoading(false);
     }
   }, [navigate]);
 
-  if (!isAuthenticated) navigate("/sign-in");
-
-  return (
+  return isLoading ? (
+    <div className="h-screen w-full flex-center relative py-32">
+      <Loader width={128} height={128} />
+      <div className="absolute bottom-0">
+        <Logo />
+      </div>
+    </div>
+  ) : (
     <UserContext.Provider
       value={{ isAuthenticated, setIsAuthenticated, userData, setUserData }}
     >

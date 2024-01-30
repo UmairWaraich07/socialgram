@@ -32,6 +32,7 @@ export type NewUserTypes = {
   fullname: string;
   profilePicture: string;
   email: string;
+  bio: string;
   savedPosts: Models.Document[];
 };
 
@@ -84,4 +85,12 @@ export type EditCommentTypes = {
 export type DeleteCommentTypes = {
   commentId: string;
   postId: string;
+};
+
+export type UpdateUserTypes = {
+  userId: string;
+  fullname: string;
+  username: string;
+  bio: string;
+  profilePicture: File[] | string;
 };

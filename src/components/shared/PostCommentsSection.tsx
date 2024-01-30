@@ -23,7 +23,7 @@ const PostCommentsSection = ({ comments }: PostCommentsSectionProps) => {
                   fullname={comment.user.fullname}
                   username={comment.user.username}
                   profilePicture={comment.user.profilePicture}
-                  width={32}
+                  className="w-8 h-8 overflow-hidden"
                 />
               </Link>
               <div className="flex flex-col w-full">

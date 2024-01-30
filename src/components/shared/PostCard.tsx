@@ -16,12 +16,14 @@ const PostCard = ({ post }: PostCardProps) => {
       <div className="flex-between">
         <div className="flex items-center gap-3">
           <Link to={`/profile/${post.user.$id}`}>
-            <Avatar
-              fullname={post.user.fullname}
-              username={post.user.username}
-              profilePicture={post.user.profilePicture}
-              width={48}
-            />
+            <div>
+              <Avatar
+                fullname={post.user.fullname}
+                username={post.user.username}
+                profilePicture={post.user.profilePicture}
+                className="w-12 h-12 overflow-hidden"
+              />
+            </div>
           </Link>
 
           <Link

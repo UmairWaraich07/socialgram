@@ -32,12 +32,14 @@ const LeftSidebar = () => {
           to={`/profile/${userData.id}`}
           className="flex items-center gap-3 "
         >
-          <Avatar
-            fullname={userData.fullname}
-            username={userData.username}
-            profilePicture={userData.profilePicture}
-            width={60}
-          />
+          <div className="">
+            <Avatar
+              fullname={userData.fullname}
+              username={userData.username}
+              profilePicture={userData.profilePicture}
+              className="w-16 h-16 overflow-hidden rounded-full"
+            />
+          </div>
           <div className="flex flex-col cursor-pointer">
             <h4 className="body-bold cursor-pointer">{userData.fullname}</h4>
             <p className="small-regular cursor-pointer">@{userData.username}</p>

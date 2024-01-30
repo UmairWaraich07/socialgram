@@ -12,15 +12,16 @@ const Avatar = ({
   fullname,
   username,
   profilePicture,
-  width = 32,
+  width,
   className,
 }: AvatarProps) => {
   return (
-    <div className={`w-[${width}px] ${className} rounded-full`}>
+    <div className={` ${className} rounded-full`}>
       {profilePicture ? (
         <img
           src={`${storageService.getMediaPreview(profilePicture)}`}
           alt={username}
+          className={`object-cover rounded-full`}
         />
       ) : (
         <img

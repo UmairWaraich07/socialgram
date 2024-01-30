@@ -42,7 +42,7 @@ const Post = () => {
                   fullname={post.user.fullname}
                   username={post.user.username}
                   profilePicture={post.user.profilePicture}
-                  width={48}
+                  className="w-12 h-12 overflow-hidden"
                 />
 
                 <div className="flex gap-1 flex-col">

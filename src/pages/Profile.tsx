@@ -24,11 +24,9 @@ const Profile = () => {
   const { userData } = useUserContext();
   const { pathname } = useLocation();
 
-  console.log({ user });
-
   return isPending && !user ? (
     <div className="w-full flex-center h-[300px]">
-      <Loader width={48} />
+      <Loader width={48} height={48} />
     </div>
   ) : (
     <div className="profile-container">
@@ -38,8 +36,7 @@ const Profile = () => {
             fullname={user?.fullname}
             username={user?.username}
             profilePicture={user?.profilePicture}
-            width={90}
-            className="w-28 h-28 lg:h-32 lg:w-32"
+            className="w-28 h-28 lg:h-32 lg:w-32 overflow-hidden object-center object-cover"
           />
           <div className="flex flex-col flex-1 justify-between md:mt-2">
             <div className="flex flex-col w-full">
@@ -56,7 +53,7 @@ const Profile = () => {
               <StatBlock value={20} label="Following" />
             </div>
             <p className="small-medium md:base-medium text-center xl:text-left mt-4 max-w-screen-sm">
-              Building the snapgram....
+              {user?.bio}
             </p>
           </div>
         </div>
@@ -65,7 +62,7 @@ const Profile = () => {
           {userData.id === user?.$id ? (
             <div>
               <Link
-                to={`/edit-profile/${user?.$id}`}
+                to={`/edit-profile/${user.$id}`}
                 className={`h-12 bg-dark-4 px-5 text-light-1 flex-center gap-2 rounded-lg 
                 `}
               >

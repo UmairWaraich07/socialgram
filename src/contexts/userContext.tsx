@@ -7,6 +7,7 @@ export const INITIAL_USER = {
   fullname: "",
   profilePicture: "",
   email: "",
+  bio: "",
   savedPosts: [],
 };
 
