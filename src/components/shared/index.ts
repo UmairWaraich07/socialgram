@@ -13,6 +13,7 @@ import EditableComment from "./EditableComment";
 import GridPostsList from "./GridPostsList";
 import ProfilePhotoUploader from "./form/ProfilePhotoUploader";
 import ConnectionBtn from "./ConnectionBtn";
+import UserCard from "./UserCard";
 
 export {
   Topbar,
@@ -30,4 +31,5 @@ export {
   GridPostsList,
   ProfilePhotoUploader,
   ConnectionBtn,
+  UserCard,
 };

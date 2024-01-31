@@ -49,6 +49,21 @@ class UserService {
     }
   }
 
+  async getAllUsers() {
+    try {
+      return await this.databases.listDocuments(
+        conf.appwriteDatabaseId,
+        conf.appwriteUsersCollectionId,
+        [Query.orderDesc("$createdAt")]
+      );
+    } catch (error) {
+      console.log(
+        `Error on getting all the users from DB :: APPWRITE :: ${error}`
+      );
+      throw new Error((error as Error).message);
+    }
+  }
+
   async getUserLikedPosts(userId: string) {
     try {
       const likedPosts = await this.databases.listDocuments(

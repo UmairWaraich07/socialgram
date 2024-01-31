@@ -190,6 +190,13 @@ export const useGetUser = (accountId: string | "") => {
   });
 };
 
+export const useGetAllUsers = () => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_USERS],
+    queryFn: () => userService.getAllUsers(),
+  });
+};
+
 export const useGetUserLikedPosts = (userId: string) => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_USER_LIKED_POSTS],
@@ -253,12 +260,9 @@ export const useAddToFollowersList = () => {
         followersList,
         followingList,
       }),
-    onSuccess: (_, variables) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.GET_USERS, variables.userId],
-      });
-      queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.GET_USERS, variables.targetUserId],
+        queryKey: [QUERY_KEYS.GET_USERS],
       });
     },
   });
@@ -278,12 +282,9 @@ export const useRemoveFromFollowersList = () => {
         followersList,
         followingList,
       }),
-    onSuccess: (_, variables) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.GET_USERS, variables.userId],
-      });
-      queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.GET_USERS, variables.targetUserId],
+        queryKey: [QUERY_KEYS.GET_USERS],
       });
     },
   });
