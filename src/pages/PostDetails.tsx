@@ -23,7 +23,7 @@ const Post = () => {
   return (
     <div className="post_details-container">
       {isPending || !post ? (
-        <Loader />
+        <Loader width={48} height={48} />
       ) : (
         <div className="post_details-card">
           <img

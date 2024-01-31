@@ -6,24 +6,22 @@ import { Loader } from "../Icons";
 
 interface GridPostListProps {
   posts: Models.Document[];
-  user?: Models.Document;
   showUser?: boolean;
   showStats?: boolean;
 }
 const GridPostsList = ({
-  user,
   posts,
   showUser = true,
   showStats = true,
 }: GridPostListProps) => {
   return !posts ? (
-    <div>
+    <div className="w-full flex-center">
       <Loader />
     </div>
   ) : (
     <ul className="grid-container">
       {posts.length === 0 ? (
-        <p>No posts to show</p>
+        <p className="text-light-4">No posts to show</p>
       ) : (
         posts?.map((post: Models.Document) => (
           <li key={post.$id} className="relative h-80">
@@ -39,16 +37,16 @@ const GridPostsList = ({
               {showUser && (
                 <div className="flex items-center justify-start gap-2 flex-1">
                   <Avatar
-                    fullname={user?.fullname}
-                    username={user?.username}
-                    profilePicture={user?.profilePicture}
-                    width={32}
+                    fullname={post?.user.fullname}
+                    username={post?.user.username}
+                    profilePicture={post?.user.profilePicture}
+                    className="w-8 h-8 rounded-full"
                   />
-                  <p className="line-clamp-1">{user?.fullname}</p>
+                  <p className="line-clamp-1">{post?.user?.fullname}</p>
                 </div>
               )}
               {showStats && (
-                <PostStats postId={post.$id} userId={user?.$id || ""} />
+                <PostStats postId={post.$id} userId={post?.user.$id || ""} />
               )}
             </div>
           </li>

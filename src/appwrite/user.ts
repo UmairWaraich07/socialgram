@@ -128,12 +128,11 @@ class UserService {
 
   async getUserFollowers(followers: string[]) {
     try {
-      console.log(followers);
-      return await this.databases.listDocuments(
-        conf.appwriteDatabaseId,
-        conf.appwriteUsersCollectionId,
-        [Query.equal("followers", ["65b918724b2097151b3d"])]
+      const list = await Promise.all(
+        followers.map(async (user) => await this.getUser(user))
       );
+      console.log({ list });
+      return list;
     } catch (error) {
       console.log(
         `Error on getting the user followers list :: APPWRITE :: ${error}`
@@ -148,6 +147,7 @@ class UserService {
     followersList,
     followingList,
   }: AddToFollowerListTypes) {
+    console.log({ followingList });
     try {
       // add the userId in the followers list of targetUser
       const response = await this.databases.updateDocument(
@@ -169,7 +169,7 @@ class UserService {
           }
         );
         if (!res) return false;
-        return true;
+        return res;
       }
     } catch (error) {
       console.log(
@@ -184,17 +184,17 @@ class UserService {
     followersList,
     followingList,
   }: AddToFollowerListTypes) {
+    console.log({ followingList });
     try {
       const newFollowersList = followersList.filter(
         (follower) => follower !== userId
       );
-      console.log({ newFollowersList });
       const newFollowingList = followingList.filter(
         (user) => user !== targetUserId
       );
       console.log({ newFollowingList });
 
-      // add the userId in the followers list of targetUser
+      // remove the userId from the followers list of targetUser
       const response = await this.databases.updateDocument(
         conf.appwriteDatabaseId,
         conf.appwriteUsersCollectionId,
@@ -204,7 +204,7 @@ class UserService {
         }
       );
       if (response) {
-        // add the targetUserId in the following list of user
+        // remove the targetUserId from the following list of user
         const res = await this.databases.updateDocument(
           conf.appwriteDatabaseId,
           conf.appwriteUsersCollectionId,
@@ -214,7 +214,7 @@ class UserService {
           }
         );
         if (!res) return false;
-        return true;
+        return res;
       }
     } catch (error) {
       console.log(

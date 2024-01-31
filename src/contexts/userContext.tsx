@@ -9,6 +9,8 @@ export const INITIAL_USER = {
   email: "",
   bio: "",
   savedPosts: [],
+  followers: [],
+  following: [],
 };
 
 const initialState = {

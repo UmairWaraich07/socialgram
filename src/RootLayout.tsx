@@ -37,6 +37,8 @@ const RootLayout = () => {
             profilePicture: currentUser.profilePicture,
             bio: currentUser.bio,
             savedPosts: currentUser.savedPosts,
+            followers: currentUser.followers,
+            following: currentUser.following,
           });
           setIsAuthenticated(true);
         } else {

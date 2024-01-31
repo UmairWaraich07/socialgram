@@ -1,14 +1,12 @@
 import { Models } from "appwrite";
 import { Link } from "react-router-dom";
 import { Avatar, ConnectionBtn } from ".";
-import { useUserContext } from "@/contexts/UserContext";
 
 interface UserCardProps {
   user: Models.Document;
 }
 
 const UserCard = ({ user }: UserCardProps) => {
-  const { userData } = useUserContext();
   return (
     <Link to={`/profile/${user.$id}`} className="user-card">
       <Avatar
@@ -27,7 +25,7 @@ const UserCard = ({ user }: UserCardProps) => {
         </p>
       </div>
 
-      <ConnectionBtn targetUser={user} userId={userData.id} />
+      <ConnectionBtn targetUser={user} />
     </Link>
   );
 };

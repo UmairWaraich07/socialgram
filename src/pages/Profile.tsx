@@ -77,7 +77,7 @@ const Profile = () => {
               </Link>
             </div>
           ) : (
-            <ConnectionBtn targetUser={user!} userId={userData.id} />
+            <ConnectionBtn targetUser={user!} />
           )}
         </div>
       </div>

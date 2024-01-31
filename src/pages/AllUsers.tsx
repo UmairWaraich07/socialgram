@@ -11,7 +11,9 @@ const AllUsers = () => {
       <div className="user-container">
         <h2 className="h3-bold md:h2-bold text-left w-full">All Users</h2>
         {isLoading && !users ? (
-          <Loader />
+          <div className="w-full flex-center">
+            <Loader width={40} height={40} />
+          </div>
         ) : (
           <ul className="user-grid">
             {users?.documents.map((user: Models.Document) => (

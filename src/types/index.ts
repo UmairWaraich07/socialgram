@@ -34,6 +34,8 @@ export type NewUserTypes = {
   email: string;
   bio: string;
   savedPosts: Models.Document[];
+  followers: string[];
+  following: string[];
 };
 
 export type IUserContextTypes = {

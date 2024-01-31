@@ -7,15 +7,17 @@ import { Models } from "appwrite";
 import { toast } from "sonner";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import React from "react";
+import { useUserContext } from "@/contexts/UserContext";
 
 interface ConnectionBtnProps {
   targetUser: Models.Document;
-  userId: string;
 }
 
-const ConnectionBtn = ({ targetUser, userId }: ConnectionBtnProps) => {
-  const isFollowingUser = targetUser?.followers.includes(userId);
-  const isUserFollowingYou = targetUser?.following.includes(userId);
+const ConnectionBtn = ({ targetUser }: ConnectionBtnProps) => {
+  const { userData, setUserData } = useUserContext();
+  const userFollowingList = userData.following;
+  const isFollowingUser = targetUser?.followers.includes(userData.id);
+  const isUserFollowingYou = targetUser?.following.includes(userData.id);
   // console.log({ isFollowingUser });
   // console.log({ isUserFollowingYou });
 
@@ -27,13 +29,20 @@ const ConnectionBtn = ({ targetUser, userId }: ConnectionBtnProps) => {
   const followTheUser = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const res = await addToFollowersList({
-      userId,
+      userId: userData.id,
       targetUserId: targetUser?.$id,
       followersList: targetUser?.followers,
-      followingList: targetUser?.following,
+      followingList: userFollowingList,
     });
-    if (!res) toast("Failed to follow this user. Please try again");
-    toast("You are now following this user");
+    if (!res) {
+      toast("Failed to follow this user. Please try again");
+    } else {
+      setUserData({
+        ...userData,
+        following: res.following,
+      });
+      toast(`You are now following ${targetUser.username}`);
+    }
   };
 
   const unfollowTheUser = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -41,16 +50,23 @@ const ConnectionBtn = ({ targetUser, userId }: ConnectionBtnProps) => {
     console.log("Follower List", targetUser?.followers);
     console.log("Following List", targetUser?.following);
     const res = await removeFromFollowersList({
-      userId,
+      userId: userData.id,
       targetUserId: targetUser?.$id,
       followersList: targetUser?.followers,
-      followingList: targetUser?.following,
+      followingList: userFollowingList,
     });
-    if (!res) toast("Failed to unfollow this user. Please try again");
-    toast("You have unfollowed this user");
+    if (!res) {
+      toast("Failed to unfollow this user. Please try again");
+    } else {
+      setUserData({
+        ...userData,
+        following: res.following,
+      });
+      toast(`You have unfollowed  ${targetUser.username}`);
+    }
   };
 
-  if (userId === targetUser.$id) {
+  if (userData.id === targetUser.$id) {
     return (
       <Button type="button" className="shad-button_primary px-8" disabled>
         Follow
