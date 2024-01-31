@@ -10,10 +10,11 @@ import { Button } from "@/components/ui/button";
 import { useUserContext } from "@/contexts/UserContext";
 import { timeAgo } from "@/lib/utils";
 import { useGetPost, useGetPostComments } from "@/react-query/queries";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 const Post = () => {
   const { id: postId } = useParams();
+  const navigate = useNavigate();
   const { data: post, isPending } = useGetPost(postId || "");
   const { data: comments } = useGetPostComments(post?.$id || "");
   const { userData } = useUserContext();
@@ -22,6 +23,21 @@ const Post = () => {
 
   return (
     <div className="post_details-container">
+      <div className="hidden md:flex max-w-5xl w-full">
+        <Button
+          onClick={() => navigate(-1)}
+          variant="ghost"
+          className="shad-button_ghost"
+        >
+          <img
+            src={"/assets/icons/back.svg"}
+            alt="back"
+            width={24}
+            height={24}
+          />
+          <p className="small-medium lg:base-medium cursor-pointer">Back</p>
+        </Button>
+      </div>
       {isPending || !post ? (
         <Loader width={48} height={48} />
       ) : (

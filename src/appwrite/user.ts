@@ -223,6 +223,22 @@ class UserService {
       throw new Error((error as Error).message);
     }
   }
+
+  async searchUser(searchTerm: string) {
+    try {
+      const users = await this.databases.listDocuments(
+        conf.appwriteDatabaseId,
+        conf.appwriteUsersCollectionId,
+        [Query.search("fullname", searchTerm)]
+      );
+
+      if (!users) throw new Error("Failed to search users");
+      return users;
+    } catch (error) {
+      console.log(`Error on searching the user :: APPWRITE :: ${error}`);
+      throw new Error((error as Error).message);
+    }
+  }
 }
 
 const userService = new UserService();

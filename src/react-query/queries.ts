@@ -289,3 +289,11 @@ export const useRemoveFromFollowersList = () => {
     },
   });
 };
+
+export const useSearchUsers = (searchTerm: string) => {
+  return useQuery({
+    queryKey: ["searchUsers"],
+    queryFn: () => userService.searchUser(searchTerm),
+    enabled: !!searchTerm,
+  });
+};
