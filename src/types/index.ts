@@ -94,3 +94,10 @@ export type UpdateUserTypes = {
   bio: string;
   profilePicture: File[] | string;
 };
+
+export type AddToFollowerListTypes = {
+  userId: string;
+  targetUserId: string;
+  followersList: string[];
+  followingList: string[];
+};

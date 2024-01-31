@@ -1,6 +1,10 @@
 import { Client, Databases, Query } from "appwrite";
 import conf from "../conf/conf";
-import { UpdateUserTypes, createUserTypes } from "../types/index";
+import {
+  AddToFollowerListTypes,
+  UpdateUserTypes,
+  createUserTypes,
+} from "../types/index";
 import storageService from "./storage";
 
 class UserService {
@@ -40,7 +44,7 @@ class UserService {
         accountId
       );
     } catch (error) {
-      console.log(`Error on creating the user in DB :: APPWRITE :: ${error}`);
+      console.log(`Error on getting the user in DB :: APPWRITE :: ${error}`);
       throw new Error((error as Error).message);
     }
   }
@@ -71,6 +75,7 @@ class UserService {
   }: UpdateUserTypes) {
     try {
       console.log({ profilePicture });
+      // TODO: rewrite the algorithm of this function
       let file;
       // check if user has updated the profilePicture
       if (typeof profilePicture !== "string") {
@@ -102,6 +107,104 @@ class UserService {
       return updatedUser;
     } catch (error) {
       console.log(`Error on updating the user :: APPWRITE :: ${error}`);
+      throw new Error((error as Error).message);
+    }
+  }
+
+  async getUserFollowers(followers: string[]) {
+    try {
+      console.log(followers);
+      return await this.databases.listDocuments(
+        conf.appwriteDatabaseId,
+        conf.appwriteUsersCollectionId,
+        [Query.equal("followers", ["65b918724b2097151b3d"])]
+      );
+    } catch (error) {
+      console.log(
+        `Error on getting the user followers list :: APPWRITE :: ${error}`
+      );
+      throw new Error((error as Error).message);
+    }
+  }
+
+  async addToFollowerList({
+    userId,
+    targetUserId,
+    followersList,
+    followingList,
+  }: AddToFollowerListTypes) {
+    try {
+      // add the userId in the followers list of targetUser
+      const response = await this.databases.updateDocument(
+        conf.appwriteDatabaseId,
+        conf.appwriteUsersCollectionId,
+        targetUserId,
+        {
+          followers: [...followersList, userId],
+        }
+      );
+      if (response) {
+        // add the targetUserId in the following list of user
+        const res = await this.databases.updateDocument(
+          conf.appwriteDatabaseId,
+          conf.appwriteUsersCollectionId,
+          userId,
+          {
+            following: [...followingList, targetUserId],
+          }
+        );
+        if (!res) return false;
+        return true;
+      }
+    } catch (error) {
+      console.log(
+        `Error on adding the user in followers list :: APPWRITE :: ${error}`
+      );
+      throw new Error((error as Error).message);
+    }
+  }
+  async removeFromFollowerList({
+    userId,
+    targetUserId,
+    followersList,
+    followingList,
+  }: AddToFollowerListTypes) {
+    try {
+      const newFollowersList = followersList.filter(
+        (follower) => follower !== userId
+      );
+      console.log({ newFollowersList });
+      const newFollowingList = followingList.filter(
+        (user) => user !== targetUserId
+      );
+      console.log({ newFollowingList });
+
+      // add the userId in the followers list of targetUser
+      const response = await this.databases.updateDocument(
+        conf.appwriteDatabaseId,
+        conf.appwriteUsersCollectionId,
+        targetUserId,
+        {
+          followers: newFollowersList,
+        }
+      );
+      if (response) {
+        // add the targetUserId in the following list of user
+        const res = await this.databases.updateDocument(
+          conf.appwriteDatabaseId,
+          conf.appwriteUsersCollectionId,
+          userId,
+          {
+            following: newFollowingList,
+          }
+        );
+        if (!res) return false;
+        return true;
+      }
+    } catch (error) {
+      console.log(
+        `Error on removing the user from followers list :: APPWRITE :: ${error}`
+      );
       throw new Error((error as Error).message);
     }
   }

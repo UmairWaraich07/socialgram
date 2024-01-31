@@ -1,6 +1,5 @@
 import { Loader } from "@/components/Icons";
-import { Avatar } from "@/components/shared";
-import { Button } from "@/components/ui/button";
+import { Avatar, ConnectionBtn } from "@/components/shared";
 import { useUserContext } from "@/contexts/UserContext";
 import { useGetUser } from "@/react-query/queries";
 import { LockClosedIcon } from "@radix-ui/react-icons";
@@ -49,8 +48,8 @@ const Profile = () => {
             </div>
             <div className="flex gap-8 mt-6 items-center justify-center xl:justify-start flex-wrap z-20">
               <StatBlock value={user?.posts.length} label="Posts" />
-              <StatBlock value={20} label="Followers" />
-              <StatBlock value={20} label="Following" />
+              <StatBlock value={user?.followers.length} label="Followers" />
+              <StatBlock value={user?.following.length} label="Following" />
             </div>
             <p className="small-medium md:base-medium text-center xl:text-left mt-4 max-w-screen-sm">
               {user?.bio}
@@ -78,9 +77,7 @@ const Profile = () => {
               </Link>
             </div>
           ) : (
-            <Button type="button" className="shad-button_primary px-8">
-              Follow
-            </Button>
+            <ConnectionBtn targetUser={user!} userId={userData.id} />
           )}
         </div>
       </div>

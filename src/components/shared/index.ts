@@ -12,6 +12,7 @@ import PostCommentsSection from "./PostCommentsSection";
 import EditableComment from "./EditableComment";
 import GridPostsList from "./GridPostsList";
 import ProfilePhotoUploader from "./form/ProfilePhotoUploader";
+import ConnectionBtn from "./ConnectionBtn";
 
 export {
   Topbar,
@@ -28,4 +29,5 @@ export {
   EditableComment,
   GridPostsList,
   ProfilePhotoUploader,
+  ConnectionBtn,
 };

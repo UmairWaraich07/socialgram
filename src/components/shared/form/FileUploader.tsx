@@ -13,7 +13,7 @@ export default function FileUploader({
   mediaUrl,
 }: FileUploaderProps) {
   const [fileUrl, setFileUrl] = useState(
-    String(storageService.getMediaPreview(mediaUrl))
+    mediaUrl ? String(storageService?.getMediaPreview(mediaUrl)) : ""
   );
 
   const onDrop = useCallback(

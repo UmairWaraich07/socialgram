@@ -1,4 +1,5 @@
 import {
+  AddToFollowerListTypes,
   CommentPostTypes,
   CreatePostTypes,
   DeleteCommentTypes,
@@ -226,5 +227,64 @@ export const useGetCurrentUser = () => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_CURRENT_USER],
     queryFn: () => authService.getCurrentUser(),
+  });
+};
+
+export const useGetUserFollowers = (followers: string[]) => {
+  return useQuery({
+    queryKey: ["userFollower"],
+    queryFn: () => userService.getUserFollowers(followers),
+    enabled: !!followers,
+  });
+};
+
+export const useAddToFollowersList = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({
+      userId,
+      targetUserId,
+      followersList,
+      followingList,
+    }: AddToFollowerListTypes) =>
+      userService.addToFollowerList({
+        userId,
+        targetUserId,
+        followersList,
+        followingList,
+      }),
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_USERS, variables.userId],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_USERS, variables.targetUserId],
+      });
+    },
+  });
+};
+export const useRemoveFromFollowersList = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({
+      userId,
+      targetUserId,
+      followersList,
+      followingList,
+    }: AddToFollowerListTypes) =>
+      userService.removeFromFollowerList({
+        userId,
+        targetUserId,
+        followersList,
+        followingList,
+      }),
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_USERS, variables.userId],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_USERS, variables.targetUserId],
+      });
+    },
   });
 };
