@@ -14,9 +14,15 @@ interface PostStatsProps {
   postId: string;
   userId: string;
   totalComments?: number;
+  isExplorePage?: boolean;
 }
 
-const PostStats = ({ postId, userId, totalComments }: PostStatsProps) => {
+const PostStats = ({
+  postId,
+  userId,
+  totalComments,
+  isExplorePage = false,
+}: PostStatsProps) => {
   const [isSaved, setIsSaved] = useState(false);
   const { userData, setUserData } = useUserContext();
   const { data: likes } = useGetPostLikes(postId);
@@ -108,8 +114,12 @@ const PostStats = ({ postId, userId, totalComments }: PostStatsProps) => {
   };
 
   return (
-    <div className={`w-full flex justify-between gap-2 items-center z-20 `}>
-      <div className="flex items-center gap-4">
+    <div
+      className={`${
+        !isExplorePage && "w-full"
+      } flex justify-between  gap-2 items-center z-20 `}
+    >
+      <div className="flex items-center w-full gap-4">
         <div className="flex gap-2">
           <img
             src={`${
@@ -136,16 +146,18 @@ const PostStats = ({ postId, userId, totalComments }: PostStatsProps) => {
         </Link>
       </div>
 
-      <div className="flex gap-2">
-        <img
-          src={isSaved ? "/assets/icons/saved.svg" : "/assets/icons/save.svg"}
-          alt="share"
-          width={20}
-          height={20}
-          className="cursor-pointer"
-          onClick={handleSaved}
-        />
-      </div>
+      {!isExplorePage && (
+        <div className="flex gap-2">
+          <img
+            src={isSaved ? "/assets/icons/saved.svg" : "/assets/icons/save.svg"}
+            alt="share"
+            width={20}
+            height={20}
+            className="cursor-pointer"
+            onClick={handleSaved}
+          />
+        </div>
+      )}
     </div>
   );
 };

@@ -47,7 +47,7 @@ export default function FileUploader({
       ) : (
         <div className="file_uploader-box">
           <img
-            src="/public/assets/icons/file-upload.svg"
+            src="/assets/icons/file-upload.svg"
             width={97}
             height={77}
             alt="file-upload"

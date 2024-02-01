@@ -5,12 +5,12 @@ const useDebounce = <T>(value: T, delay: number): T => {
 
   useEffect(() => {
     // Update debounced value after delay
-    const handleer = setTimeout(() => {
+    const handler = setTimeout(() => {
       setDebouncedValue(value);
     }, delay);
 
     return () => {
-      clearTimeout(handleer);
+      clearTimeout(handler);
     };
   }, [value, delay]); // Only re-call effect if value or delay changes
 

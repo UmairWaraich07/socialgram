@@ -239,6 +239,21 @@ class UserService {
       throw new Error((error as Error).message);
     }
   }
+
+  async getTopCreators() {
+    try {
+      const creators = await this.databases.listDocuments(
+        conf.appwriteDatabaseId,
+        conf.appwriteUsersCollectionId,
+        [Query.orderAsc("followers"), Query.limit(6)]
+      );
+      if (!creators) throw new Error("Failed to get top creators");
+      return creators;
+    } catch (error) {
+      console.log(`Error on getting the top creators :: APPWRITE :: ${error}`);
+      throw new Error((error as Error).message);
+    }
+  }
 }
 
 const userService = new UserService();

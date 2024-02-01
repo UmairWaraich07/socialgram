@@ -86,17 +86,58 @@ class ConfigService {
     }
   }
 
-  async getRecentPosts() {
+  async getRecentPosts(pageParam: string) {
+    const queries = [Query.orderDesc("$createdAt"), Query.limit(10)];
+    if (pageParam) {
+      queries.push(Query.cursorAfter(pageParam));
+    }
     try {
       const recentPosts = await this.databases.listDocuments(
         config.appwriteDatabaseId,
         config.appwritePostsCollectionId,
-        [Query.orderDesc("$createdAt"), Query.limit(20)]
+        queries
       );
       if (!recentPosts) throw new Error("Failed to get Recent Posts");
       return recentPosts;
     } catch (error) {
       console.log(`Error on getting the recent posts :: APPWRITE :: ${error}`);
+      throw new Error((error as Error).message);
+    }
+  }
+
+  async getInfinitePosts(pageParam: string) {
+    const queries = [Query.orderDesc("$createdAt"), Query.limit(9)];
+    if (pageParam) {
+      queries.push(Query.cursorAfter(pageParam.toString()));
+    }
+    console.log({ pageParam });
+    try {
+      const posts = await this.databases.listDocuments(
+        config.appwriteDatabaseId,
+        config.appwritePostsCollectionId,
+        queries
+      );
+      if (!posts) throw new Error("Error on getting the infinite posts");
+      return posts;
+    } catch (error) {
+      console.log(
+        `Error on getting the infinite posts :: APPWRITE :: ${error}`
+      );
+      throw new Error((error as Error).message);
+    }
+  }
+
+  async searchPost(searchTerm: string) {
+    try {
+      const posts = await this.databases.listDocuments(
+        config.appwriteDatabaseId,
+        config.appwritePostsCollectionId,
+        [Query.search("caption", searchTerm)]
+      );
+      if (!posts) throw new Error("Failed to search for posts");
+      return posts;
+    } catch (error) {
+      console.log(`Error on searching the posts :: APPWRITE :: ${error}`);
       throw new Error((error as Error).message);
     }
   }

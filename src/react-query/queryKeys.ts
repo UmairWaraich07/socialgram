@@ -1,5 +1,5 @@
 export enum QUERY_KEYS {
-  GET_RECENT_POSTS = "recentPosts",
+  GET_POSTS = "posts",
   GET_CURRENT_USER = "currentUser",
   GET_POST_LIKES = "postLikes",
   GET_CHECK_LIKED = "checkLiked",

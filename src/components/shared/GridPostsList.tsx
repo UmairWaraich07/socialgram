@@ -6,11 +6,13 @@ import { Loader } from "../Icons";
 
 interface GridPostListProps {
   posts: Models.Document[];
+  isExplorePage?: boolean;
   showUser?: boolean;
   showStats?: boolean;
 }
 const GridPostsList = ({
   posts,
+  isExplorePage,
   showUser = true,
   showStats = true,
 }: GridPostListProps) => {
@@ -35,7 +37,7 @@ const GridPostsList = ({
 
             <div className="grid-post_user">
               {showUser && (
-                <div className="flex items-center justify-start gap-2 flex-1">
+                <div className="flex items-center justify-start gap-2 w-full flex-1">
                   <Avatar
                     fullname={post?.user.fullname}
                     username={post?.user.username}
@@ -46,7 +48,11 @@ const GridPostsList = ({
                 </div>
               )}
               {showStats && (
-                <PostStats postId={post.$id} userId={post?.user.$id || ""} />
+                <PostStats
+                  postId={post.$id}
+                  userId={post?.user.$id || ""}
+                  isExplorePage={isExplorePage}
+                />
               )}
             </div>
           </li>

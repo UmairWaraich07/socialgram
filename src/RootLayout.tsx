@@ -68,10 +68,10 @@ const RootLayout = () => {
     <UserContext.Provider
       value={{ isAuthenticated, setIsAuthenticated, userData, setUserData }}
     >
-      <div className="w-full md:flex relative">
+      <div className="w-full md:flex relative ">
         <Topbar />
         <LeftSidebar />
-        <main className="flex flex-1 h-full">
+        <main className="flex flex-1 h-full ">
           <Outlet />
         </main>
 

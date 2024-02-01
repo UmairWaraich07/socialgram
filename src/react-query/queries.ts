@@ -12,7 +12,12 @@ import {
   registerUserTypes,
 } from "@/types/index";
 import authService from "@/appwrite/auth";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { QUERY_KEYS } from "./queryKeys";
 import configService from "@/appwrite/config";
 import userService from "@/appwrite/user";
@@ -45,17 +50,26 @@ export const useCreatePost = () => {
     mutationFn: (data: CreatePostTypes) => configService.createPost(data),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.GET_RECENT_POSTS],
+        queryKey: [QUERY_KEYS.GET_POSTS],
       });
     },
   });
 };
 
 export const useGetRecentPosts = () => {
-  return useQuery({
-    queryKey: [QUERY_KEYS.GET_RECENT_POSTS],
-    queryFn: async () => {
-      return await configService.getRecentPosts();
+  return useInfiniteQuery({
+    queryKey: [QUERY_KEYS.GET_POSTS],
+    queryFn: ({ pageParam }) => configService.getRecentPosts(pageParam),
+    initialPageParam: "",
+    getNextPageParam: (lastPage, allPages) => {
+      const totalDocuments = allPages.reduce(
+        (acc, page) => acc + page.documents.length,
+        0
+      );
+      if (totalDocuments === lastPage.total) return null;
+      if (lastPage.documents.length === 0) return null;
+      const lastId = lastPage.documents[lastPage.documents.length - 1].$id;
+      return lastId;
     },
   });
 };
@@ -130,6 +144,32 @@ export const useRemoveFromSaved = () => {
   });
 };
 
+export const useGetPosts = () => {
+  return useInfiniteQuery({
+    queryKey: [QUERY_KEYS.GET_POSTS, "infinite"],
+    queryFn: ({ pageParam }) => configService.getInfinitePosts(pageParam),
+    initialPageParam: "",
+    getNextPageParam: (lastPage, allPages) => {
+      const totalDocuments = allPages.reduce(
+        (acc, page) => acc + page.documents.length,
+        0
+      );
+      if (totalDocuments === lastPage.total) return null;
+      if (lastPage.documents.length === 0) return null;
+      const lastId = lastPage.documents[lastPage.documents.length - 1].$id;
+      return lastId;
+    },
+  });
+};
+
+export const useSearchPosts = (searchTerm: string) => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_POSTS, searchTerm],
+    queryFn: () => configService.searchPost(searchTerm),
+    enabled: !!searchTerm,
+  });
+};
+
 // ** POST COMMENT QUERIES ** //
 
 export const useGetPostComments = (postId: string) => {
@@ -194,6 +234,7 @@ export const useGetAllUsers = () => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_USERS],
     queryFn: () => userService.getAllUsers(),
+    staleTime: 1 * 60 * 1000,
   });
 };
 
@@ -295,5 +336,13 @@ export const useSearchUsers = (searchTerm: string) => {
     queryKey: ["searchUsers"],
     queryFn: () => userService.searchUser(searchTerm),
     enabled: !!searchTerm,
+  });
+};
+
+export const useGetTopCreators = () => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_USERS, "top"],
+    queryFn: () => userService.getTopCreators(),
+    staleTime: 2 * 60 * 1000, // 2 minuts
   });
 };

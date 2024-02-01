@@ -14,6 +14,7 @@ import GridPostsList from "./GridPostsList";
 import ProfilePhotoUploader from "./form/ProfilePhotoUploader";
 import ConnectionBtn from "./ConnectionBtn";
 import UserCard from "./UserCard";
+import TopCreators from "./TopCreators";
 
 export {
   Topbar,
@@ -32,4 +33,5 @@ export {
   ProfilePhotoUploader,
   ConnectionBtn,
   UserCard,
+  TopCreators,
 };
