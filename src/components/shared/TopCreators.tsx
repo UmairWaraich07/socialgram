@@ -20,7 +20,9 @@ const TopCreators = () => {
     <div className="sticky right-0 top-0 home-creators border border-dark-4 h-screen">
       <h3 className="h3-bold text-light-1">Top Creators</h3>
       {isUserLoading && !creators ? (
-        <Loader />
+        <div className="w-full flex-center">
+          <Loader />
+        </div>
       ) : (
         <ul className="grid 2xl:grid-cols-2 gap-6">
           {creators?.documents.map((creator) => (

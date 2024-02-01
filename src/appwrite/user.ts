@@ -5,7 +5,6 @@ import {
   UpdateUserTypes,
   createUserTypes,
 } from "../types/index";
-import storageService from "./storage";
 
 class UserService {
   client = new Client();
@@ -90,12 +89,7 @@ class UserService {
   }: UpdateUserTypes) {
     try {
       console.log({ profilePicture });
-      // TODO: rewrite the algorithm of this function
-      let file;
-      // check if user has updated the profilePicture
-      if (typeof profilePicture !== "string") {
-        file = await storageService.uploadMedia(profilePicture[0]);
-      }
+
       const updatedUser = await this.databases.updateDocument(
         conf.appwriteDatabaseId,
         conf.appwriteUsersCollectionId,
@@ -104,21 +98,10 @@ class UserService {
           fullname,
           username,
           bio,
-          profilePicture: file ? file.$id : profilePicture,
+          profilePicture,
         }
       );
-      // if there is error in updating the user then delete the newly updated media
-      if (!updatedUser) {
-        if (file?.$id) {
-          await storageService.deleteMedia(file?.$id);
-        }
-      }
-      // delete the already stored profilePicture from storage
-      if (file?.$id) {
-        if (typeof profilePicture === "string") {
-          await storageService.deleteMedia(profilePicture);
-        }
-      }
+
       return updatedUser;
     } catch (error) {
       console.log(`Error on updating the user :: APPWRITE :: ${error}`);

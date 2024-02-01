@@ -20,6 +20,7 @@ import { ReloadIcon } from "@radix-ui/react-icons";
 import { ProfilePhotoUploader } from "@/components/shared";
 import { toast } from "sonner";
 import { useEffect } from "react";
+import storageService from "@/appwrite/storage";
 
 const EditProfile = () => {
   const { id } = useParams();
@@ -47,28 +48,57 @@ const EditProfile = () => {
     form.setValue("bio", userData?.bio ? userData.bio : "");
   }, [userData, form]);
 
-  async function onSubmit(values: z.infer<typeof editProfileValidation>) {
-    console.log(values);
-    const response = await editProfile({
-      userId: userData.id,
-      ...values,
-    });
-    if (response) {
-      setUserData({
-        ...userData,
-        username: response.username,
-        fullname: response.fullname,
-        profilePicture: response.profilePicture,
-        bio: response.bio,
-      });
-      navigate(`/profile/${userData.id}`);
-      toast("Profile updated successfully!");
-    } else {
-      toast("Failed to make changes. Please try again");
+  async function edit(values: z.infer<typeof editProfileValidation>) {
+    try {
+      // check if the user has changed the photo or not
+      const isMediaChanged =
+        typeof values.profilePicture === "string" ? false : true;
+      // upload the new file to the appwrite bucket
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const file: any = isMediaChanged
+        ? await storageService.uploadMedia(values.profilePicture[0] as File)
+        : userData.profilePicture;
+      if (file) {
+        // if there is new photo then delete the already uploaded
+        if (isMediaChanged) {
+          const response = await storageService.deleteMedia(
+            userData.profilePicture
+          );
+          if (!response) throw new Error("Existed image deletion failed");
+        }
+        //  send the edited Post data to the server
+        const editedInfo = await editProfile({
+          ...values,
+          userId: userData.id,
+          profilePicture: isMediaChanged ? file.$id : userData.profilePicture,
+        });
+
+        if (editedInfo) {
+          setUserData({
+            ...userData,
+            username: editedInfo.username,
+            fullname: editedInfo.fullname,
+            profilePicture: editedInfo.profilePicture,
+            bio: editedInfo.bio,
+          });
+          navigate(`/profile/${userData.id}`);
+          toast("Profile updated successfully!");
+        } else {
+          // delete the file from appwrite storage
+          if (isMediaChanged) {
+            await storageService.deleteMedia(file.$id);
+          }
+          toast("Failed to make changes. Please try again");
+        }
+      }
+    } catch (error) {
+      console.log(`Error on editing the user info :: ${error}`);
+      throw new Error((error as Error).message);
     }
   }
 
   if (userData.id !== id) return;
+
   return (
     <div className="w-full">
       <div className="common-container">
@@ -84,7 +114,7 @@ const EditProfile = () => {
 
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(onSubmit)}
+            onSubmit={form.handleSubmit(edit)}
             className="w-full flex flex-col gap-9 max-w-5xl"
           >
             <FormField
