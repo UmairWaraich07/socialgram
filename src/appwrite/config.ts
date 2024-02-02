@@ -259,16 +259,20 @@ class ConfigService {
   }
 
   // ** COMMENTS ** //
-  async getPostComments(postId: string) {
+  async getPostComments(postId: string, pageParam: string) {
+    const queries = [
+      Query.equal("post", postId),
+      Query.orderDesc("$createdAt"),
+      Query.limit(10),
+    ];
+    if (pageParam) {
+      queries.push(Query.cursorAfter(pageParam));
+    }
     try {
       const comments = await this.databases.listDocuments(
         config.appwriteDatabaseId,
         config.appwriteCommentsCollectionId,
-        [
-          Query.equal("post", postId),
-          Query.orderDesc("$createdAt"),
-          Query.limit(10),
-        ]
+        queries
       );
       if (!comments) throw new Error("Failed to fetch comments of this POST!");
       return comments;

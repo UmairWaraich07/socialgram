@@ -1,5 +1,6 @@
 import { Loader } from "@/components/Icons";
 import { UserCard } from "@/components/shared";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import useDebounce from "@/hooks/useDebounce";
 import { useGetAllUsers, useSearchUsers } from "@/react-query/queries";
@@ -39,12 +40,20 @@ const SearchedUsersResult = ({
 };
 
 const AllUsers = () => {
-  const { data: users, isPending: isLoading } = useGetAllUsers();
+  const {
+    data: users,
+    isPending: isLoading,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useGetAllUsers();
   const [search, setSearch] = useState("");
-  const shouldShowSearchResults = search.trim() !== "";
-  const debouncedValue = useDebounce(search.trim(), 500);
+  const debouncedValue = useDebounce(search.trim(), 300);
+  const shouldShowSearchResults = debouncedValue.trim() !== "";
+
   const { data: searchedUsers, isFetching: isSearching } =
     useSearchUsers(debouncedValue);
+  const allUsers = users?.pages.flatMap((page) => page.documents);
 
   return (
     <div className="common-container">
@@ -73,7 +82,7 @@ const AllUsers = () => {
               />
             ) : (
               <ul className="user-grid w-full">
-                {users?.documents.map((user: Models.Document) => (
+                {allUsers?.map((user: Models.Document) => (
                   <li key={user?.$id} className="flex-1 min-w-[200px] w-full">
                     <UserCard user={user} />
                   </li>
@@ -82,6 +91,28 @@ const AllUsers = () => {
             )}
           </>
         )}
+
+        <div className="w-full flex-center">
+          {!shouldShowSearchResults &&
+            (isFetchingNextPage ? (
+              <div className="w-full flex-center">
+                <Loader />
+              </div>
+            ) : hasNextPage ? (
+              <Button
+                onClick={() => fetchNextPage()}
+                className="shad-button_primary"
+              >
+                Load more users
+              </Button>
+            ) : (
+              !isLoading && (
+                <p className="text-light-3 mt-10 text-center w-full">
+                  End of users
+                </p>
+              )
+            ))}
+        </div>
       </div>
     </div>
   );

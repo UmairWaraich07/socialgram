@@ -49,12 +49,16 @@ class UserService {
     }
   }
 
-  async getAllUsers() {
+  async getAllUsers(pageParam: string) {
+    const queries = [Query.orderDesc("$createdAt"), Query.limit(9)];
+    if (pageParam) {
+      queries.push(Query.cursorAfter(pageParam));
+    }
     try {
       return await this.databases.listDocuments(
         conf.appwriteDatabaseId,
         conf.appwriteUsersCollectionId,
-        [Query.orderDesc("$createdAt")]
+        queries
       );
     } catch (error) {
       console.log(
@@ -64,15 +68,19 @@ class UserService {
     }
   }
 
-  async getUserLikedPosts(userId: string) {
+  async getUserLikedPosts(userId: string, pageParam: string) {
+    const queries = [Query.equal("user", [userId]), Query.limit(9)];
+    if (pageParam) {
+      queries.push(Query.cursorAfter(pageParam));
+    }
     try {
       const likedPosts = await this.databases.listDocuments(
         conf.appwriteDatabaseId,
         conf.appwriteLikesCollectionId,
-        [Query.equal("user", [userId]), Query.limit(10)]
+        queries
       );
       if (!likedPosts) throw new Error("Failed to fetch liked Posts");
-      return likedPosts.documents;
+      return likedPosts;
     } catch (error) {
       console.log(
         `Error on getting the user liked POSTS :: APPWRITE :: ${error}`

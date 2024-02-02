@@ -188,9 +188,21 @@ export const useSearchPosts = (searchTerm: string) => {
 // ** POST COMMENT QUERIES ** //
 
 export const useGetPostComments = (postId: string) => {
-  return useQuery({
+  return useInfiniteQuery({
     queryKey: [QUERY_KEYS.GET_POST_COMMENTS, postId],
-    queryFn: () => configService.getPostComments(postId),
+    queryFn: ({ pageParam }) =>
+      configService.getPostComments(postId, pageParam),
+    initialPageParam: "",
+    getNextPageParam: (lastPage, allPages) => {
+      const totalDocuments = allPages.reduce(
+        (acc, page) => acc + page.documents.length,
+        0
+      );
+      if (totalDocuments === lastPage.total) return null;
+      if (lastPage.documents.length === 0) return null;
+      const lastId = lastPage.documents[lastPage.documents.length - 1].$id;
+      return lastId;
+    },
     enabled: !!postId,
   });
 };
@@ -246,17 +258,40 @@ export const useGetUser = (accountId: string | "") => {
 };
 
 export const useGetAllUsers = () => {
-  return useQuery({
+  return useInfiniteQuery({
     queryKey: [QUERY_KEYS.GET_USERS],
-    queryFn: () => userService.getAllUsers(),
+    queryFn: ({ pageParam }) => userService.getAllUsers(pageParam),
+    initialPageParam: "",
+    getNextPageParam: (lastPage, allPages) => {
+      const totalDocuments = allPages.reduce(
+        (acc, page) => acc + page.documents.length,
+        0
+      );
+      if (totalDocuments === lastPage.total) return null;
+      if (lastPage.documents.length === 0) return null;
+      const lastId = lastPage.documents[lastPage.documents.length - 1].$id;
+      return lastId;
+    },
     staleTime: 1 * 60 * 1000,
   });
 };
 
 export const useGetUserLikedPosts = (userId: string) => {
-  return useQuery({
+  return useInfiniteQuery({
     queryKey: [QUERY_KEYS.GET_USER_LIKED_POSTS],
-    queryFn: () => userService.getUserLikedPosts(userId),
+    queryFn: ({ pageParam }) =>
+      userService.getUserLikedPosts(userId, pageParam),
+    initialPageParam: "",
+    getNextPageParam: (lastPage, allPages) => {
+      const totalDocuments = allPages.reduce(
+        (acc, page) => acc + page.documents.length,
+        0
+      );
+      if (totalDocuments === lastPage.total) return null;
+      if (lastPage.documents.length === 0) return null;
+      const lastId = lastPage.documents[lastPage.documents.length - 1].$id;
+      return lastId;
+    },
     enabled: !!userId,
   });
 };

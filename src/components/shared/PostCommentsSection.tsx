@@ -3,11 +3,25 @@ import { Link } from "react-router-dom";
 import { Avatar, EditableComment } from ".";
 import { Loader } from "../Icons";
 import { timeAgoComments } from "@/lib/utils";
+import { useInView } from "react-intersection-observer";
+import { useEffect } from "react";
 
 interface PostCommentsSectionProps {
   comments: Models.Document[] | undefined;
+  hasNextPage: boolean;
+  fetchNextPage: () => unknown;
 }
-const PostCommentsSection = ({ comments }: PostCommentsSectionProps) => {
+const PostCommentsSection = ({
+  comments,
+  hasNextPage,
+  fetchNextPage,
+}: PostCommentsSectionProps) => {
+  const { ref, inView } = useInView();
+
+  useEffect(() => {
+    if (inView) fetchNextPage();
+  }, [inView, fetchNextPage]);
+
   return !comments ? (
     <div className="w-full h-full flex-center">
       <Loader />
@@ -41,6 +55,12 @@ const PostCommentsSection = ({ comments }: PostCommentsSectionProps) => {
               </div>
             </div>
           ))}
+
+          {hasNextPage && (
+            <div className="w-full flex-center mt-6" ref={ref}>
+              <Loader />
+            </div>
+          )}
         </div>
       ) : (
         <div className="flex-center h-full flex-col">

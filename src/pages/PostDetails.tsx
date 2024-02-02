@@ -21,7 +21,13 @@ const Post = () => {
   const { id: postId } = useParams();
   const navigate = useNavigate();
   const { data: post, isPending } = useGetPost(postId || "");
-  const { data: comments } = useGetPostComments(post?.$id || "");
+  const {
+    data: comments,
+    fetchNextPage,
+    hasNextPage,
+  } = useGetPostComments(post?.$id || "");
+  const allComments = comments?.pages.flatMap((page) => page.documents);
+
   const { mutateAsync: deletePost } = useDeletePost();
   const { userData, setUserData } = useUserContext();
 
@@ -148,7 +154,11 @@ const Post = () => {
 
             <hr className="w-full border border-dark-4/80" />
             {/* COMMENTS SECTION */}
-            <PostCommentsSection comments={comments?.documents} />
+            <PostCommentsSection
+              comments={allComments}
+              hasNextPage={hasNextPage}
+              fetchNextPage={fetchNextPage}
+            />
 
             <hr className="border w-full border-dark-4/80" />
 
@@ -156,7 +166,7 @@ const Post = () => {
               <PostStats
                 postId={post.$id}
                 userId={userData.id}
-                totalComments={comments?.total}
+                totalComments={comments?.pages.length}
               />
               <hr className="border w-full border-dark-4/80" />
               <PostComment

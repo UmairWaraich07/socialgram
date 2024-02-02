@@ -32,19 +32,17 @@ const SearchedPosts = ({ posts, isSearching }: SearchedPostsProps) => {
 const Explore = () => {
   const { ref, inView } = useInView();
   const [searchValue, setSearchValue] = useState("");
-  const debouncedValue = useDebounce(searchValue.trim(), 500);
-  console.log(debouncedValue);
+  const debouncedValue = useDebounce(searchValue.trim(), 300);
   const { data: searchedPosts, isFetching: isSearching } =
     useSearchPosts(debouncedValue);
   const shouldShowSearchResult = debouncedValue !== "";
 
   const { data: posts, hasNextPage, fetchNextPage } = useGetPosts();
   const allPosts = posts?.pages.flatMap((page) => page.documents);
-  // console.log({ posts });
-  // console.log({ allPages });
+
   useEffect(() => {
     if (inView && !searchValue) fetchNextPage();
-  }, [inView, searchValue]);
+  }, [inView, searchValue, fetchNextPage]);
   return (
     <div className="explore-container">
       <div className="explore-inner_container">
