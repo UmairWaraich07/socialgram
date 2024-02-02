@@ -100,6 +100,12 @@ export type UpdateUserTypes = {
 export type AddToFollowerListTypes = {
   userId: string;
   targetUserId: string;
-  followersList: string[];
-  followingList: string[];
+  targetUserFollowersList: string[];
+  userFollowingList: string[];
+};
+export type RemoveFollowerTypes = {
+  userId: string;
+  targetUserId: string;
+  userFollowersList: string[];
+  targetUserFollowingList: string[];
 };

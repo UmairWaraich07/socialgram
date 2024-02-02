@@ -8,6 +8,7 @@ import {
   SavePostTypes,
 } from "@/types";
 import { Client, Databases, ID, Query } from "appwrite";
+import storageService from "./storage";
 
 class ConfigService {
   client = new Client();
@@ -71,15 +72,20 @@ class ConfigService {
     }
   }
 
-  async deletePost(postId: string) {
+  async deletePost(postId: string, mediaId: string) {
     try {
       const response = await this.databases.deleteDocument(
         config.appwriteDatabaseId,
         config.appwritePostsCollectionId,
         postId
       );
-      if (response) return true;
-      return false;
+      console.log("post deleted", response);
+      if (response) {
+        const res = await storageService.deleteMedia(mediaId);
+        if (res) return response;
+      } else {
+        throw new Error("Failed to delete the post");
+      }
     } catch (error) {
       console.log(`Error on deleting the post :: APPWRITE :: ${error}`);
       throw new Error((error as Error).message);

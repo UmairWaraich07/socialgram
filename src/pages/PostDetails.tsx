@@ -9,17 +9,43 @@ import {
 import { Button } from "@/components/ui/button";
 import { useUserContext } from "@/contexts/UserContext";
 import { timeAgo } from "@/lib/utils";
-import { useGetPost, useGetPostComments } from "@/react-query/queries";
+import {
+  useDeletePost,
+  useGetPost,
+  useGetPostComments,
+} from "@/react-query/queries";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { toast } from "sonner";
 
 const Post = () => {
   const { id: postId } = useParams();
   const navigate = useNavigate();
   const { data: post, isPending } = useGetPost(postId || "");
   const { data: comments } = useGetPostComments(post?.$id || "");
-  const { userData } = useUserContext();
+  const { mutateAsync: deletePost } = useDeletePost();
+  const { userData, setUserData } = useUserContext();
 
-  const handleDeletePost = () => {};
+  const handleDeletePost = async () => {
+    if (post) {
+      const response = await deletePost({
+        postId: post.$id,
+        mediaId: post.media,
+      });
+      if (!response) {
+        toast("Failed to delete this post. Please try again");
+      } else {
+        toast("Post deleted successfully");
+        navigate(`/profile/${userData.id}`);
+        const filteredSavedPosts = userData.savedPosts.filter(
+          (post) => post.$id !== postId
+        );
+        setUserData({
+          ...userData,
+          savedPosts: filteredSavedPosts,
+        });
+      }
+    }
+  };
 
   return (
     <div className="post_details-container">

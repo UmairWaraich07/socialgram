@@ -6,6 +6,7 @@ import {
   EditCommentTypes,
   EditPostTypes,
   LikePostTypes,
+  RemoveFollowerTypes,
   SavePostTypes,
   UpdateUserTypes,
   loginUserTypes,
@@ -49,6 +50,20 @@ export const useCreatePost = () => {
   return useMutation({
     mutationFn: (data: CreatePostTypes) => configService.createPost(data),
     onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_POSTS],
+      });
+    },
+  });
+};
+
+export const useDeletePost = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ postId, mediaId }: { postId: string; mediaId: string }) =>
+      configService.deletePost(postId, mediaId),
+    onSuccess: (data) => {
+      console.log({ data });
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_POSTS],
       });
@@ -122,7 +137,7 @@ export const useDeleteLike = () => {
   return useMutation({
     mutationFn: ({ likeRecordId }: { likeRecordId: string; postId: string }) =>
       configService.deleteLike(likeRecordId),
-    onSuccess: (data, variables) => {
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_POST_LIKES, variables.postId],
       });
@@ -278,28 +293,20 @@ export const useGetCurrentUser = () => {
   });
 };
 
-export const useGetUserFollowers = (followers: string[]) => {
-  return useQuery({
-    queryKey: ["userFollower"],
-    queryFn: () => userService.getUserFollowers(followers),
-    enabled: !!followers,
-  });
-};
-
 export const useAddToFollowersList = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({
       userId,
       targetUserId,
-      followersList,
-      followingList,
+      targetUserFollowersList,
+      userFollowingList,
     }: AddToFollowerListTypes) =>
       userService.addToFollowerList({
         userId,
         targetUserId,
-        followersList,
-        followingList,
+        targetUserFollowersList,
+        userFollowingList,
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -314,18 +321,21 @@ export const useRemoveFromFollowersList = () => {
     mutationFn: ({
       userId,
       targetUserId,
-      followersList,
-      followingList,
+      targetUserFollowersList,
+      userFollowingList,
     }: AddToFollowerListTypes) =>
       userService.removeFromFollowerList({
         userId,
         targetUserId,
-        followersList,
-        followingList,
+        targetUserFollowersList,
+        userFollowingList,
       }),
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_USERS],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_USERS, variables.userId],
       });
     },
   });
@@ -344,5 +354,51 @@ export const useGetTopCreators = () => {
     queryKey: [QUERY_KEYS.GET_USERS, "top"],
     queryFn: () => userService.getTopCreators(),
     staleTime: 2 * 60 * 1000, // 2 minuts
+  });
+};
+
+export const useGetUserFollowers = (
+  followers: string[],
+  userId: string | undefined,
+  isFollowerClicked: boolean
+) => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_USERS, userId, "followers"],
+    queryFn: () => userService.getUserFollowers(followers),
+    enabled: !!isFollowerClicked,
+  });
+};
+export const useGetUserFollowing = (
+  following: string[],
+  userId: string | undefined,
+  isFollowingClicked: boolean
+) => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_USERS, userId, "following"],
+    queryFn: () => userService.getUserFollowing(following),
+    enabled: !!isFollowingClicked,
+  });
+};
+
+export const useRemoveFollower = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({
+      userId,
+      targetUserId,
+      userFollowersList,
+      targetUserFollowingList,
+    }: RemoveFollowerTypes) =>
+      userService.removeFollower({
+        userId,
+        targetUserId,
+        userFollowersList,
+        targetUserFollowingList,
+      }),
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_USERS, variables.userId],
+      });
+    },
   });
 };

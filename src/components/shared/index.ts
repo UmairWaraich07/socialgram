@@ -15,6 +15,8 @@ import ProfilePhotoUploader from "./form/ProfilePhotoUploader";
 import ConnectionBtn from "./ConnectionBtn";
 import UserCard from "./UserCard";
 import TopCreators from "./TopCreators";
+import ProfileStats from "./ProfileStats";
+import ProfileUserCard from "./ProfileUserCard";
 
 export {
   Topbar,
@@ -34,4 +36,6 @@ export {
   ConnectionBtn,
   UserCard,
   TopCreators,
+  ProfileStats,
+  ProfileUserCard,
 };

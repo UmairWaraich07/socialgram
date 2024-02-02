@@ -2,6 +2,7 @@ import { Client, Databases, Query } from "appwrite";
 import conf from "../conf/conf";
 import {
   AddToFollowerListTypes,
+  RemoveFollowerTypes,
   UpdateUserTypes,
   createUserTypes,
 } from "../types/index";
@@ -111,14 +112,28 @@ class UserService {
 
   async getUserFollowers(followers: string[]) {
     try {
-      const list = await Promise.all(
-        followers.map(async (user) => await this.getUser(user))
+      return await this.databases.listDocuments(
+        conf.appwriteDatabaseId,
+        conf.appwriteUsersCollectionId,
+        [Query.equal("$id", followers.length > 0 ? followers : [""])]
       );
-      console.log({ list });
-      return list;
     } catch (error) {
       console.log(
         `Error on getting the user followers list :: APPWRITE :: ${error}`
+      );
+      throw new Error((error as Error).message);
+    }
+  }
+  async getUserFollowing(following: string[]) {
+    try {
+      return await this.databases.listDocuments(
+        conf.appwriteDatabaseId,
+        conf.appwriteUsersCollectionId,
+        [Query.equal("$id", following.length > 0 ? following : [""])]
+      );
+    } catch (error) {
+      console.log(
+        `Error on getting the user following list :: APPWRITE :: ${error}`
       );
       throw new Error((error as Error).message);
     }
@@ -127,10 +142,9 @@ class UserService {
   async addToFollowerList({
     userId,
     targetUserId,
-    followersList,
-    followingList,
+    targetUserFollowersList,
+    userFollowingList,
   }: AddToFollowerListTypes) {
-    console.log({ followingList });
     try {
       // add the userId in the followers list of targetUser
       const response = await this.databases.updateDocument(
@@ -138,7 +152,7 @@ class UserService {
         conf.appwriteUsersCollectionId,
         targetUserId,
         {
-          followers: [...followersList, userId],
+          followers: [...targetUserFollowersList, userId],
         }
       );
       if (response) {
@@ -148,7 +162,7 @@ class UserService {
           conf.appwriteUsersCollectionId,
           userId,
           {
-            following: [...followingList, targetUserId],
+            following: [...userFollowingList, targetUserId],
           }
         );
         if (!res) return false;
@@ -164,18 +178,16 @@ class UserService {
   async removeFromFollowerList({
     userId,
     targetUserId,
-    followersList,
-    followingList,
+    targetUserFollowersList,
+    userFollowingList,
   }: AddToFollowerListTypes) {
-    console.log({ followingList });
     try {
-      const newFollowersList = followersList.filter(
+      const newFollowersList = targetUserFollowersList.filter(
         (follower) => follower !== userId
       );
-      const newFollowingList = followingList.filter(
+      const newFollowingList = userFollowingList.filter(
         (user) => user !== targetUserId
       );
-      console.log({ newFollowingList });
 
       // remove the userId from the followers list of targetUser
       const response = await this.databases.updateDocument(
@@ -234,6 +246,50 @@ class UserService {
       return creators;
     } catch (error) {
       console.log(`Error on getting the top creators :: APPWRITE :: ${error}`);
+      throw new Error((error as Error).message);
+    }
+  }
+
+  async removeFollower({
+    userId,
+    targetUserId,
+    userFollowersList,
+    targetUserFollowingList,
+  }: RemoveFollowerTypes) {
+    // console.log({ followingList });
+    try {
+      const newUserFollowersList = userFollowersList.filter(
+        (follower) => follower !== targetUserId
+      );
+      const newTargetUserFollowingList = targetUserFollowingList.filter(
+        (user) => user !== userId
+      );
+      // console.log({ newFollowingList });
+
+      // remove the userId from targetUserFollowingList
+      const response = await this.databases.updateDocument(
+        conf.appwriteDatabaseId,
+        conf.appwriteUsersCollectionId,
+        targetUserId,
+        {
+          following: newTargetUserFollowingList,
+        }
+      );
+      if (response) {
+        // remove the targetUserId from userFollowersList
+        const res = await this.databases.updateDocument(
+          conf.appwriteDatabaseId,
+          conf.appwriteUsersCollectionId,
+          userId,
+          {
+            followers: newUserFollowersList,
+          }
+        );
+        if (!res) throw new Error("Failed to remove from follower");
+        return res;
+      }
+    } catch (error) {
+      console.log(`Error on removing the follower :: APPWRITE :: ${error}`);
       throw new Error((error as Error).message);
     }
   }

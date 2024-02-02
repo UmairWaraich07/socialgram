@@ -76,7 +76,7 @@ const RootLayout = () => {
         </main>
 
         <Bottombar />
-        <Toaster />
+        <Toaster theme="dark" />
       </div>
     </UserContext.Provider>
   );
