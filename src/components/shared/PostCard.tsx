@@ -1,7 +1,7 @@
 import { Models } from "appwrite";
 import { Link } from "react-router-dom";
 import { Avatar, PostComment, PostStats } from ".";
-import { timeAgo } from "@/lib/utils";
+import { scrollToTop, timeAgo } from "@/lib/utils";
 import { useUserContext } from "@/contexts/UserContext";
 import storageService from "@/appwrite/storage";
 
@@ -15,7 +15,7 @@ const PostCard = ({ post }: PostCardProps) => {
     <div className="post-card">
       <div className="flex-between">
         <div className="flex items-center gap-3">
-          <Link to={`/profile/${post.user.$id}`}>
+          <Link to={`/profile/${post.user.$id}`} onClick={scrollToTop}>
             <div>
               <Avatar
                 fullname={post.user.fullname}
@@ -28,6 +28,7 @@ const PostCard = ({ post }: PostCardProps) => {
 
           <Link
             to={`/profile/${post.user.$id}`}
+            onClick={scrollToTop}
             className="flex flex-col cursor-pointer"
           >
             <p className="base-medium lg:body-bold text-light-1 cursor-pointer">
@@ -47,7 +48,7 @@ const PostCard = ({ post }: PostCardProps) => {
 
         {/* ONLY show the edit post to the creator of the post */}
         {userData.id === post.user.$id && (
-          <Link to={`/edit-post/${post.$id}`}>
+          <Link to={`/edit-post/${post.$id}`} onClick={scrollToTop}>
             <img
               src="/assets/icons/edit.svg"
               alt="edit"
@@ -58,7 +59,7 @@ const PostCard = ({ post }: PostCardProps) => {
         )}
       </div>
 
-      <Link to={`/post/${post.$id}`}>
+      <Link to={`/post/${post.$id}`} onClick={scrollToTop}>
         <div className="small-medium lg:base-medium py-5">
           <p className="line-clamp-1">{post.caption}</p>
           <ul className="flex gap-2 mt-2 line-clamp-2">

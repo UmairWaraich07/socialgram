@@ -301,6 +301,20 @@ class UserService {
       throw new Error((error as Error).message);
     }
   }
+
+  async getUserRelatedPosts(userId: string) {
+    try {
+      const user = await this.databases.listDocuments(
+        conf.appwriteDatabaseId,
+        conf.appwriteUsersCollectionId,
+        [Query.equal("$id", userId)]
+      );
+      return user.documents;
+    } catch (error) {
+      console.log(`Error on removing the follower :: APPWRITE :: ${error}`);
+      throw new Error((error as Error).message);
+    }
+  }
 }
 
 const userService = new UserService();

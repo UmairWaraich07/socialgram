@@ -70,4 +70,6 @@ export function parseTags(inputString: string): string[] {
   return formattedTags;
 }
 
-// Example usage
+export const scrollToTop = () => {
+  window.scrollTo(0, 0);
+};

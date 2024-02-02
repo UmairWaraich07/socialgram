@@ -437,3 +437,9 @@ export const useRemoveFollower = () => {
     },
   });
 };
+
+// export const useGetUserRelatedPosts = (userId : string) => {
+//   return useQuery({
+//     queryKey : [QUERY_KEYS.GET_USERS, userId ],
+//   })
+// }

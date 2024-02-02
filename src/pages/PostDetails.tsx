@@ -5,6 +5,7 @@ import {
   PostComment,
   PostCommentsSection,
   PostStats,
+  RelatedPosts,
 } from "@/components/shared";
 import { Button } from "@/components/ui/button";
 import { useUserContext } from "@/contexts/UserContext";
@@ -13,7 +14,9 @@ import {
   useDeletePost,
   useGetPost,
   useGetPostComments,
+  useGetUser,
 } from "@/react-query/queries";
+import { Models } from "appwrite";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -27,7 +30,13 @@ const Post = () => {
     hasNextPage,
   } = useGetPostComments(post?.$id || "");
   const allComments = comments?.pages.flatMap((page) => page.documents);
-
+  const { data: userInfo, isPending: isUserLoading } = useGetUser(
+    post?.user.$id
+  );
+  const relatedPosts = userInfo?.posts.filter(
+    (post: Models.Document) => post.$id !== postId
+  );
+  console.log({ relatedPosts });
   const { mutateAsync: deletePost } = useDeletePost();
   const { userData, setUserData } = useUserContext();
 
@@ -71,7 +80,9 @@ const Post = () => {
         </Button>
       </div>
       {isPending || !post ? (
-        <Loader width={48} height={48} />
+        <div className="h-[400px] w-full flex-center">
+          <Loader width={48} height={48} />
+        </div>
       ) : (
         <div className="post_details-card">
           <img
@@ -176,6 +187,21 @@ const Post = () => {
               />
             </div>
           </div>
+        </div>
+      )}
+
+      {relatedPosts?.length > 0 && (
+        <div className="w-full max-w-5xl">
+          <hr className="border w-full border-dark-4/80" />
+
+          <h3 className="body-bold md:h3-bold w-full my-10">
+            More Related Posts
+          </h3>
+          {isUserLoading || !relatedPosts ? (
+            <Loader />
+          ) : (
+            <RelatedPosts posts={relatedPosts} user={post?.user} />
+          )}
         </div>
       )}
     </div>

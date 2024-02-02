@@ -17,6 +17,7 @@ import UserCard from "./UserCard";
 import TopCreators from "./TopCreators";
 import ProfileStats from "./ProfileStats";
 import ProfileUserCard from "./ProfileUserCard";
+import RelatedPosts from "./RelatedPosts";
 
 export {
   Topbar,
@@ -38,4 +39,5 @@ export {
   TopCreators,
   ProfileStats,
   ProfileUserCard,
+  RelatedPosts,
 };

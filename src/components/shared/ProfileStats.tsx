@@ -67,15 +67,21 @@ const ProfileStats = ({ user, profileOwnerId }: ProfileStatsProps) => {
                 </div>
               ) : (
                 <ul className="flex flex-col gap-4">
-                  {followersList?.documents?.map((user: Models.Document) => (
-                    <li key={user.$id}>
-                      <ProfileUserCard
-                        user={user}
-                        isFollowersDialog={true}
-                        profileOwnerId={profileOwnerId}
-                      />
-                    </li>
-                  ))}
+                  {followersList && followersList?.total > 0 ? (
+                    followersList?.documents?.map((user: Models.Document) => (
+                      <li key={user.$id}>
+                        <ProfileUserCard
+                          user={user}
+                          isFollowersDialog={true}
+                          profileOwnerId={profileOwnerId}
+                        />
+                      </li>
+                    ))
+                  ) : (
+                    <p className="text-light-2 w-full">
+                      {user?.fullname} has no followers yet.
+                    </p>
+                  )}
                 </ul>
               )}
             </AlertDialogDescription>
@@ -114,15 +120,21 @@ const ProfileStats = ({ user, profileOwnerId }: ProfileStatsProps) => {
                 </div>
               ) : (
                 <ul className="flex flex-col gap-4">
-                  {followingList?.documents?.map((user: Models.Document) => (
-                    <li key={user.$id}>
-                      <ProfileUserCard
-                        user={user}
-                        isFollowingDialong={true}
-                        profileOwnerId={profileOwnerId}
-                      />
-                    </li>
-                  ))}
+                  {followingList && followingList?.total > 0 ? (
+                    followingList?.documents?.map((user: Models.Document) => (
+                      <li key={user.$id}>
+                        <ProfileUserCard
+                          user={user}
+                          isFollowingDialong={true}
+                          profileOwnerId={profileOwnerId}
+                        />
+                      </li>
+                    ))
+                  ) : (
+                    <p className="text-light-2 w-full">
+                      {user?.fullname} has no following yet.
+                    </p>
+                  )}
                 </ul>
               )}
             </AlertDialogDescription>
