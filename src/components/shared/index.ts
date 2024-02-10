@@ -1,3 +1,5 @@
+import { lazy } from "react";
+
 import Bottombar from "./Bottombar";
 import Topbar from "./Topbar";
 import Logo from "./Logo";
@@ -8,16 +10,16 @@ import FileUploader from "./form/FileUploader";
 import PostCard from "./PostCard";
 import PostStats from "./PostStats";
 import PostComment from "./PostComment";
-import PostCommentsSection from "./PostCommentsSection";
-import EditableComment from "./EditableComment";
-import GridPostsList from "./GridPostsList";
-import ProfilePhotoUploader from "./form/ProfilePhotoUploader";
 import ConnectionBtn from "./ConnectionBtn";
-import UserCard from "./UserCard";
 import TopCreators from "./TopCreators";
-import ProfileStats from "./ProfileStats";
-import ProfileUserCard from "./ProfileUserCard";
-import RelatedPosts from "./RelatedPosts";
+const PostCommentsSection = lazy(() => import("./PostCommentsSection"));
+const EditableComment = lazy(() => import("./EditableComment"));
+const GridPostsList = lazy(() => import("./GridPostsList"));
+const ProfilePhotoUploader = lazy(() => import("./form/ProfilePhotoUploader"));
+const UserCard = lazy(() => import("./UserCard"));
+const ProfileStats = lazy(() => import("./ProfileStats"));
+const ProfileUserCard = lazy(() => import("./ProfileUserCard"));
+const RelatedPosts = lazy(() => import("./RelatedPosts"));
 
 export {
   Topbar,

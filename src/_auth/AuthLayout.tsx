@@ -11,7 +11,11 @@ const AuthLayout = () => {
       ) : (
         <div className="flex ">
           <section className="flex-center flex-1 flex-col py-10">
+            {/* <Suspense
+              fallback={<h1 className="text-red text-4xl">Loading...</h1>}
+            > */}
             <Outlet />
+            {/* </Suspense> */}
           </section>
 
           <img

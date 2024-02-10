@@ -1,11 +1,12 @@
 import authService from "@/appwrite/auth";
 import { INITIAL_USER, UserContext } from "@/contexts/UserContext";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { Toaster, toast } from "sonner";
 import { Bottombar, LeftSidebar, Logo, Topbar } from "./components/shared";
 import { NewUserTypes } from "./types";
 import { Loader } from "./components/Icons";
+import Loading from "./components/shared/Loading";
 
 const RootLayout = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -58,9 +59,9 @@ const RootLayout = () => {
   }, [navigate]);
 
   return isLoading ? (
-    <div className="h-screen w-full flex-center relative py-32">
-      <Loader width={128} height={128} />
-      <div className="absolute bottom-0">
+    <div className="h-screen max-sm:h-[70vh] w-full flex-center relative">
+      <Loader width={64} height={64} />
+      <div className="absolute bottom-20 left-1/2 -translate-x-1/2 -translate-y-1/2">
         <Logo />
       </div>
     </div>
@@ -72,7 +73,9 @@ const RootLayout = () => {
         <Topbar />
         <LeftSidebar />
         <main className="flex flex-1 h-full ">
-          <Outlet />
+          <Suspense fallback={<Loading />}>
+            <Outlet />
+          </Suspense>
         </main>
 
         <Bottombar />

@@ -1,14 +1,16 @@
-import Home from "./Home";
-import Post from "./PostDetails";
-import Profile from "./Profile";
-import Saved from "./Saved";
-import AllUsers from "./AllUsers";
-import CreatePost from "./CreatePost";
-import EditPost from "./EditPost";
-import Explore from "./Explore";
-import EditProfile from "./EditProfile";
-import LikedPosts from "./LikedPosts";
-import ProfilePosts from "./ProfilePosts";
+import { lazy } from "react";
+
+const Home = lazy(() => import("./Home"));
+const Post = lazy(() => import("./PostDetails"));
+const Profile = lazy(() => import("./Profile"));
+const Saved = lazy(() => import("./Saved"));
+const AllUsers = lazy(() => import("./AllUsers"));
+const CreatePost = lazy(() => import("./CreatePost"));
+const EditPost = lazy(() => import("./EditPost"));
+const Explore = lazy(() => import("./Explore"));
+const EditProfile = lazy(() => import("./EditProfile"));
+const ProfilePosts = lazy(() => import("./ProfilePosts"));
+const LikedPosts = lazy(() => import("./LikedPosts"));
 
 export {
   Home,
