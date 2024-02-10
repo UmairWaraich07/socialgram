@@ -151,16 +151,18 @@ const Post = () => {
             <hr className="border w-full border-dark-4/80" />
             <div className="flex flex-col flex-1 w-full small-medium lg:base-regular">
               <p>{post?.caption}</p>
-              <ul className="flex gap-2 mt-2">
-                {post?.tags.map((tag: string, index: string) => (
-                  <li
-                    key={`${tag}${index}`}
-                    className="text-light-3 small-regular"
-                  >
-                    #{tag}
-                  </li>
-                ))}
-              </ul>
+              {post.tags[0].length > 0 && (
+                <ul className="flex gap-2 mt-2">
+                  {post?.tags.map((tag: string, index: string) => (
+                    <li
+                      key={`${tag}${index}`}
+                      className="text-light-3 small-regular"
+                    >
+                      #{tag}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
 
             <hr className="w-full border border-dark-4/80" />

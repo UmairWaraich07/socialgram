@@ -28,7 +28,7 @@ const ProfileUserCard = ({
     const res = await removeFollower({
       userId: userData.id,
       targetUserId: (user as Models.Document)?.$id,
-      userFollowersList: userData.followers,
+      userFollowersList: userData.followers!,
       targetUserFollowingList: user?.following,
     });
     if (!res) {

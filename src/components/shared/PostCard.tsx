@@ -62,16 +62,18 @@ const PostCard = ({ post }: PostCardProps) => {
       <Link to={`/post/${post.$id}`} onClick={scrollToTop}>
         <div className="small-medium lg:base-medium py-5">
           <p className="line-clamp-1">{post.caption}</p>
-          <ul className="flex gap-2 mt-2 line-clamp-2">
-            {post.tags.map((tag: string, index: number) => (
-              <li
-                key={`${tag}-${index}`}
-                className="text-light-3 small-regular"
-              >
-                #{tag}
-              </li>
-            ))}
-          </ul>
+          {post.tags[0].length > 0 && (
+            <ul className="flex gap-2 mt-2 line-clamp-2">
+              {post.tags.map((tag: string, index: number) => (
+                <li
+                  key={`${tag}-${index}`}
+                  className="text-light-3 small-regular"
+                >
+                  #{tag}
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
 
         <img

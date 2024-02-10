@@ -30,7 +30,7 @@ const ConnectionBtn = ({ targetUser }: ConnectionBtnProps) => {
       userId: userData.id,
       targetUserId: (targetUser as Models.Document)?.$id,
       targetUserFollowersList: targetUser?.followers,
-      userFollowingList: userFollowingList,
+      userFollowingList: userFollowingList!,
     });
     if (!res) {
       toast("Failed to follow this user. Please try again");
@@ -52,7 +52,7 @@ const ConnectionBtn = ({ targetUser }: ConnectionBtnProps) => {
       userId: userData.id,
       targetUserId: (targetUser as Models.Document)?.$id,
       targetUserFollowersList: targetUser?.followers,
-      userFollowingList: userFollowingList,
+      userFollowingList: userFollowingList!,
     });
     if (!res) {
       toast("Failed to unfollow this user. Please try again");

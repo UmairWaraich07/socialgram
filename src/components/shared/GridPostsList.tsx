@@ -6,7 +6,7 @@ import { Loader } from "../Icons";
 import { scrollToTop } from "@/lib/utils";
 
 interface GridPostListProps {
-  posts: Models.Document[];
+  posts: Models.Document[] | undefined;
   isExplorePage?: boolean;
   showUser?: boolean;
   showStats?: boolean;

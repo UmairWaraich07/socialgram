@@ -50,46 +50,52 @@ const EditProfile = () => {
 
   async function edit(values: z.infer<typeof editProfileValidation>) {
     try {
+      console.log(values.profilePicture);
       // check if the user has changed the photo or not
       const isMediaChanged =
         typeof values.profilePicture === "string" ? false : true;
+      console.log({ isMediaChanged });
       // upload the new file to the appwrite bucket
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const file: any = isMediaChanged
         ? await storageService.uploadMedia(values.profilePicture[0] as File)
         : userData.profilePicture;
+
+      console.log({ file });
       if (file) {
         // if there is new photo then delete the already uploaded
-        if (isMediaChanged) {
+        if (userData.profilePicture?.length > 1) {
           const response = await storageService.deleteMedia(
             userData.profilePicture
           );
           if (!response) throw new Error("Existed image deletion failed");
         }
-        //  send the edited Post data to the server
-        const editedInfo = await editProfile({
-          ...values,
-          userId: userData.id,
-          profilePicture: isMediaChanged ? file.$id : userData.profilePicture,
-        });
+      }
+      //  send the edited Post data to the server
+      const editedInfo = await editProfile({
+        ...values,
+        userId: userData.id,
+        profilePicture: isMediaChanged ? file.$id : userData.profilePicture,
+      });
 
-        if (editedInfo) {
-          setUserData({
-            ...userData,
-            username: editedInfo.username,
-            fullname: editedInfo.fullname,
-            profilePicture: editedInfo.profilePicture,
-            bio: editedInfo.bio,
-          });
-          navigate(`/profile/${userData.id}`);
-          toast("Profile updated successfully!");
-        } else {
-          // delete the file from appwrite storage
-          if (isMediaChanged) {
-            await storageService.deleteMedia(file.$id);
-          }
-          toast("Failed to make changes. Please try again");
+      console.log({ editedInfo });
+
+      if (editedInfo) {
+        setUserData({
+          ...userData,
+          username: editedInfo.username,
+          fullname: editedInfo.fullname,
+          profilePicture: editedInfo.profilePicture,
+          bio: editedInfo.bio,
+        });
+        navigate(`/profile/${userData.id}`);
+        toast("Profile updated successfully!");
+      } else {
+        // delete the file from appwrite storage
+        if (isMediaChanged) {
+          await storageService.deleteMedia(file.$id);
         }
+        toast("Failed to make changes. Please try again");
       }
     } catch (error) {
       console.log(`Error on editing the user info :: ${error}`);

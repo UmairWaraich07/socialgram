@@ -8,7 +8,6 @@ const TopCreators = () => {
     isPending: isUserLoading,
     isError,
   } = useGetTopCreators();
-  console.log({ creators });
 
   if (isError) {
     <div className="sticky right-0 top-0 home-creators border border-dark-4 h-screen">

@@ -27,15 +27,15 @@ export const postFormValidation = z.object({
   caption: z
     .string()
     .min(1, { message: "Caption must be at least 1 character." })
-    .max(30)
+    .max(120)
     .trim(),
   media: z.custom<File[]>(),
-  location: z.string().min(2).max(20).trim(),
+  location: z.string().max(20).trim(),
   tags: z.string().toLowerCase(),
 });
 
 export const postCommentValidation = z.object({
-  comment: z.string().min(1, { message: "Comment cannot be empty!" }).max(220),
+  comment: z.string().min(1, { message: "Comment cannot be empty." }).max(220),
 });
 
 export const editProfileValidation = z.object({

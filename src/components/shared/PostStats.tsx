@@ -36,8 +36,11 @@ const PostStats = ({
     // loop through the collection of likes of that post and check if this user liked it or not
     likes?.documents.map((doc) => doc.user.$id === userId && setIsLiked(true));
 
-    userData.savedPosts.map((post) => post.$id === postId && setIsSaved(true));
-  }, [postId, userData.savedPosts, likes, userId]);
+    userData &&
+      userData?.savedPosts?.map(
+        (post) => post.$id === postId && setIsSaved(true)
+      );
+  }, [postId, userData, likes, userId]);
 
   const handleLike = async () => {
     if (isLiked) {
@@ -78,7 +81,7 @@ const PostStats = ({
       const res = await removeFromSaved({
         userId,
         postId,
-        savedPosts,
+        savedPosts: savedPosts ? savedPosts : [],
       });
       if (res) {
         setIsSaved(false);
@@ -97,7 +100,7 @@ const PostStats = ({
       const res = await addToSaved({
         userId,
         postId,
-        savedPosts,
+        savedPosts: savedPosts ? savedPosts : [],
       });
       if (res) {
         setIsSaved(true);

@@ -21,7 +21,7 @@ const Saved = () => {
         <Loader />
       ) : (
         <ul className="w-full flex justify-center max-w-5xl gap-9">
-          {userData.savedPosts.length === 0 ? (
+          {userData?.savedPosts?.length === 0 ? (
             <p className="text-light-4">No saved posts</p>
           ) : (
             <GridPostsList posts={userData?.savedPosts} showStats={false} />

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -58,13 +59,13 @@ const PostComment = ({
       {Object.keys(newComment).length > 0 && showNewComment && (
         <div className="flex items-center gap-3 ">
           <Link to={`/profile/${userId}`} className="font-medium">
-            {newComment?.user.username}
+            {(newComment as any)?.user.username}
           </Link>
           <Link
             to={`/post/${postId}`}
             className="text-sm line-clamp-1 text-light-2/80"
           >
-            {newComment?.text}
+            {(newComment as any)?.text}
           </Link>
         </div>
       )}

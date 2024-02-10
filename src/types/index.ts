@@ -32,10 +32,10 @@ export type NewUserTypes = {
   fullname: string;
   profilePicture: string;
   email: string;
-  bio: string;
-  savedPosts: Models.Document[];
-  followers: string[];
-  following: string[];
+  bio?: string;
+  savedPosts?: Models.Document[];
+  followers?: string[];
+  following?: string[];
 };
 
 export type IUserContextTypes = {
