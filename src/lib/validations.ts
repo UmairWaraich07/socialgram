@@ -30,7 +30,11 @@ export const postFormValidation = z.object({
     .max(120)
     .trim(),
   media: z.custom<File[]>(),
-  location: z.string().max(20).trim(),
+  location: z
+    .string()
+    .min(2, { message: "Location must be at least 2 character." })
+    .max(20)
+    .trim(),
   tags: z.string().toLowerCase(),
 });
 

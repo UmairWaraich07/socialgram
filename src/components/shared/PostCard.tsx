@@ -83,7 +83,7 @@ const PostCard = ({ post }: PostCardProps) => {
         />
       </Link>
 
-      <PostStats postId={post.$id} userId={userData.id} />
+      <PostStats postId={post.$id} userId={post.user.$id} />
       <PostComment postId={post.$id} userId={userData.id} />
     </div>
   );

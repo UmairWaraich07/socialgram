@@ -15,21 +15,24 @@ const ProfilePosts = () => {
       {posts.length === 0 ? (
         <p className="text-light-4">No posts to show</p>
       ) : (
-        posts?.map((post: Models.Document) => (
-          <li key={post.$id} className="relative h-80">
-            <Link to={`/post/${post.$id}`} className="grid-post_link">
-              <img
-                src={String(storageService.getMediaPreview(post.media))}
-                alt="post"
-                className="h-full w-full object-cover"
-              />
-            </Link>
+        posts
+          ?.slice()
+          .reverse()
+          .map((post: Models.Document) => (
+            <li key={post.$id} className="relative h-80">
+              <Link to={`/post/${post.$id}`} className="grid-post_link">
+                <img
+                  src={String(storageService.getMediaPreview(post.media))}
+                  alt="post"
+                  className="h-full w-full object-cover"
+                />
+              </Link>
 
-            <div className="grid-post_user">
-              <PostStats postId={post.$id} userId={user.$id || ""} />
-            </div>
-          </li>
-        ))
+              <div className="grid-post_user">
+                <PostStats postId={post.$id} userId={user.$id || ""} />
+              </div>
+            </li>
+          ))
       )}
     </ul>
   );
