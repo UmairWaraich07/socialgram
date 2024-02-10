@@ -124,7 +124,7 @@ export const useAddLike = () => {
   return useMutation({
     mutationFn: ({ postId, userId }: LikePostTypes) =>
       configService.addLike({ postId, userId }),
-    onSuccess: (data, variables) => {
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_POST_LIKES, variables.postId],
       });
@@ -212,7 +212,7 @@ export const useAddComment = () => {
   return useMutation({
     mutationFn: ({ text, postId, userId }: CommentPostTypes) =>
       configService.addComment({ text, postId, userId }),
-    onSuccess: (data, variables) => {
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_POST_COMMENTS, variables.postId],
       });
@@ -225,7 +225,7 @@ export const useDeleteComment = () => {
   return useMutation({
     mutationFn: ({ commentId }: DeleteCommentTypes) =>
       configService.deleteComment(commentId),
-    onSuccess: (data, variables) => {
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_POST_COMMENTS, variables.postId],
       });
@@ -239,7 +239,7 @@ export const useEditComment = () => {
   return useMutation({
     mutationFn: ({ commentId, text }: EditCommentTypes) =>
       configService.editComment({ commentId, text }),
-    onSuccess: (data, variables) => {
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_POST_COMMENTS, variables.postId],
       });

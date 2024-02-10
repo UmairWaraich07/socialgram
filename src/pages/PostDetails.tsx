@@ -51,7 +51,7 @@ const Post = () => {
       } else {
         toast("Post deleted successfully");
         navigate(`/profile/${userData.id}`);
-        const filteredSavedPosts = userData.savedPosts.filter(
+        const filteredSavedPosts = userData?.savedPosts?.filter(
           (post) => post.$id !== postId
         );
         setUserData({
