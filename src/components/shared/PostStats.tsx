@@ -1,3 +1,4 @@
+import { Models } from "appwrite";
 import { useUserContext } from "../../contexts/UserContext";
 import {
   useAddLike,
@@ -38,7 +39,7 @@ const PostStats = ({
 
     userData &&
       userData?.savedPosts?.map(
-        (post) => post.$id === postId && setIsSaved(true)
+        (post: Models.Document) => post.$id === postId && setIsSaved(true)
       );
   }, [postId, userData, likes, userId]);
 
