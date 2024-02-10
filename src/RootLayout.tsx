@@ -1,5 +1,5 @@
 import authService from "@/appwrite/auth";
-import UserContext, { INITIAL_USER } from "./contexts/UserContext.tsx";
+import { INITIAL_USER, UserContext } from "./contexts/UserContext.tsx";
 import { Suspense, useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { Toaster, toast } from "sonner";
@@ -13,7 +13,6 @@ const RootLayout = () => {
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userData, setUserData] = useState<NewUserTypes>(INITIAL_USER);
-  console.log({ userData });
 
   useEffect(() => {
     setIsLoading(true);

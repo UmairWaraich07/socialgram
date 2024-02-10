@@ -21,10 +21,8 @@ const initialState = {
   //TODO: add isLoading for good ui/ux
 };
 
-const UserContext = createContext<IUserContextTypes>(initialState);
+export const UserContext = createContext<IUserContextTypes>(initialState);
 
 export const useUserContext = () => {
   return useContext(UserContext);
 };
-
-export default UserContext;
