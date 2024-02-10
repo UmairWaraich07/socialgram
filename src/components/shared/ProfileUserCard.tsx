@@ -3,7 +3,7 @@ import { Avatar, ConnectionBtn } from ".";
 import { toast } from "sonner";
 import { Models } from "appwrite";
 import { useState } from "react";
-import { useUserContext } from "@/contexts/UserContext";
+import { useUserContext } from "../../contexts/UserContext";
 import { useRemoveFollower } from "@/react-query/queries";
 import { Button } from "../ui/button";
 

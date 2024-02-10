@@ -17,7 +17,7 @@ import { useLoginUser, useRegisterUser } from "@/react-query/queries";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { toast } from "sonner";
 import authService from "@/appwrite/auth";
-import { useUserContext } from "@/contexts/UserContext";
+import { useUserContext } from "../../contexts/UserContext";
 
 const SignUpForm = () => {
   const navigate = useNavigate();

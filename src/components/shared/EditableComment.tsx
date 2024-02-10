@@ -19,7 +19,7 @@ import { postCommentValidation } from "@/lib/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useDeleteComment, useEditComment } from "@/react-query/queries";
-import { useUserContext } from "@/contexts/UserContext";
+import { useUserContext } from "../../contexts/UserContext";
 import { Link } from "react-router-dom";
 import { Models } from "appwrite";
 import { toast } from "sonner";

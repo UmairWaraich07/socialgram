@@ -7,7 +7,7 @@ import { Models } from "appwrite";
 import { toast } from "sonner";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import React from "react";
-import { useUserContext } from "@/contexts/UserContext";
+import { useUserContext } from "../../contexts/UserContext";
 
 interface ConnectionBtnProps {
   targetUser: Models.Document | undefined;

@@ -1,6 +1,6 @@
 import { Loader } from "@/components/Icons";
 import { GridPostsList } from "@/components/shared";
-import { useUserContext } from "@/contexts/UserContext";
+import { useUserContext } from "../contexts/UserContext";
 
 const Saved = () => {
   const { userData } = useUserContext();

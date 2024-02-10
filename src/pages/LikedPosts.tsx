@@ -1,7 +1,7 @@
 import storageService from "@/appwrite/storage";
 import { Loader } from "@/components/Icons";
 import { Avatar } from "@/components/shared";
-import { useUserContext } from "@/contexts/UserContext";
+import { useUserContext } from "../contexts/UserContext";
 import { useGetUserLikedPosts } from "@/react-query/queries";
 import { Models } from "appwrite";
 import { useEffect } from "react";

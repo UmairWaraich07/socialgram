@@ -15,7 +15,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { postFormValidation } from "@/lib/validations";
 import { FileUploader } from "..";
 import storageService from "@/appwrite/storage";
-import { useUserContext } from "@/contexts/UserContext";
+import { useUserContext } from "../../../contexts/UserContext";
 import { toast } from "sonner";
 import { useCreatePost, useEditPost } from "@/react-query/queries";
 import { ReloadIcon } from "@radix-ui/react-icons";

@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { Toaster } from "@/components/ui/sonner";
-import { useUserContext } from "@/contexts/UserContext";
+import { useUserContext } from "../contexts/UserContext";
 
 const AuthLayout = () => {
   const { isAuthenticated } = useUserContext();

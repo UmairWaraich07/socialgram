@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Logo } from ".";
 import { Button } from "../ui/button";
-import { INITIAL_USER, useUserContext } from "@/contexts/UserContext";
+import { INITIAL_USER, useUserContext } from "../../contexts/UserContext";
 import authService from "@/appwrite/auth";
 import Avatar from "./Avatar";
 

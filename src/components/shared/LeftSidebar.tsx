@@ -1,6 +1,6 @@
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Logo } from ".";
-import { INITIAL_USER, useUserContext } from "@/contexts/UserContext";
+import { INITIAL_USER, useUserContext } from "../../contexts/UserContext";
 import Avatar from "./Avatar";
 import { LeftbarLinks } from "@/constants";
 import { Button } from "../ui/button";

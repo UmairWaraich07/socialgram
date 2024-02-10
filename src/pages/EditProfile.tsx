@@ -1,4 +1,4 @@
-import { useUserContext } from "@/contexts/UserContext";
+import { useUserContext } from "../contexts/UserContext";
 import { useNavigate, useParams } from "react-router-dom";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";

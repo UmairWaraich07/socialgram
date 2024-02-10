@@ -2,7 +2,7 @@ import { Models } from "appwrite";
 import { Link } from "react-router-dom";
 import { Avatar, PostComment, PostStats } from ".";
 import { scrollToTop, timeAgo } from "@/lib/utils";
-import { useUserContext } from "@/contexts/UserContext";
+import { useUserContext } from "../../contexts/UserContext";
 import storageService from "@/appwrite/storage";
 
 interface PostCardProps {

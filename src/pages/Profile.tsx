@@ -1,6 +1,6 @@
 import { Loader } from "@/components/Icons";
 import { Avatar, ConnectionBtn, ProfileStats } from "@/components/shared";
-import { useUserContext } from "@/contexts/UserContext";
+import { useUserContext } from "../contexts/UserContext";
 import { useGetUser } from "@/react-query/queries";
 import { LockClosedIcon } from "@radix-ui/react-icons";
 import { Link, Outlet, useLocation, useParams } from "react-router-dom";
@@ -60,7 +60,7 @@ const Profile = () => {
           {userData.id === user?.$id ? (
             <div>
               <Link
-                to={`/edit-profile/${user.$id}`}
+                to={`/edit-profile/${user?.$id}`}
                 className={`h-12 bg-dark-4 px-5 text-light-1 flex-center gap-2 rounded-lg 
                 `}
               >

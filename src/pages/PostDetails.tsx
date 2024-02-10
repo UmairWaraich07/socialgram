@@ -8,7 +8,7 @@ import {
   RelatedPosts,
 } from "@/components/shared";
 import { Button } from "@/components/ui/button";
-import { useUserContext } from "@/contexts/UserContext";
+import { useUserContext } from "../contexts/UserContext";
 import { timeAgo } from "@/lib/utils";
 import {
   useDeletePost,
@@ -52,7 +52,7 @@ const Post = () => {
         toast("Post deleted successfully");
         navigate(`/profile/${userData.id}`);
         const filteredSavedPosts = userData?.savedPosts?.filter(
-          (post) => post.$id !== postId
+          (post: Models.Document) => post.$id !== postId
         );
         setUserData({
           ...userData,
