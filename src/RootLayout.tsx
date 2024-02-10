@@ -1,5 +1,5 @@
 import authService from "@/appwrite/auth";
-import { INITIAL_USER, UserContext } from "./contexts/UserContext";
+import { INITIAL_USER, UserContext } from "./contexts/UserContext.tsx";
 import { Suspense, useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { Toaster, toast } from "sonner";
