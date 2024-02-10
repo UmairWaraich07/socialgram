@@ -50,7 +50,7 @@ const GridPostsList = ({
                     fullname={post?.user.fullname}
                     username={post?.user.username}
                     profilePicture={post?.user.profilePicture}
-                    className="w-8 h-8 rounded-full"
+                    className="w-8 h-8 rounded-full overflow-hidden"
                   />
                   <p className="line-clamp-1 cursor-pointer">
                     {post?.user?.fullname}
