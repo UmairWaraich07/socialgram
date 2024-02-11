@@ -44,6 +44,7 @@ const RootLayout = () => {
         } else {
           setUserData(INITIAL_USER);
           setIsAuthenticated(false);
+          navigate("/sign-in");
           toast("Login failed. Try again");
         }
       })();

@@ -36,7 +36,7 @@ const Post = () => {
   const relatedPosts = userInfo?.posts.filter(
     (post: Models.Document) => post.$id !== postId
   );
-  console.log({ relatedPosts });
+  console.log({ post });
   const { mutateAsync: deletePost } = useDeletePost();
   const { userData, setUserData } = useUserContext();
 
@@ -178,7 +178,7 @@ const Post = () => {
             <div className="w-full flex flex-col gap-5 lg:gap-4">
               <PostStats
                 postId={post.$id}
-                userId={userData.id}
+                userId={post.user.$id}
                 totalComments={comments?.pages.length}
               />
               <hr className="border w-full border-dark-4/80" />

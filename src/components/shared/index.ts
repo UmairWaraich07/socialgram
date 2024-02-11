@@ -12,14 +12,15 @@ import PostStats from "./PostStats";
 import PostComment from "./PostComment";
 import ConnectionBtn from "./ConnectionBtn";
 import TopCreators from "./TopCreators";
-const PostCommentsSection = lazy(() => import("./PostCommentsSection"));
-const EditableComment = lazy(() => import("./EditableComment"));
-const GridPostsList = lazy(() => import("./GridPostsList"));
+import ProfileStats from "./ProfileStats";
+import RelatedPosts from "./RelatedPosts";
+import PostCommentsSection from "./PostCommentsSection";
+import GridPostsList from "./GridPostsList";
+import EditableComment from "./EditableComment";
+
 const ProfilePhotoUploader = lazy(() => import("./form/ProfilePhotoUploader"));
 const UserCard = lazy(() => import("./UserCard"));
-const ProfileStats = lazy(() => import("./ProfileStats"));
 const ProfileUserCard = lazy(() => import("./ProfileUserCard"));
-const RelatedPosts = lazy(() => import("./RelatedPosts"));
 
 export {
   Topbar,

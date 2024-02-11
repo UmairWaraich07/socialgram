@@ -55,7 +55,7 @@ const PostComment = ({
     }
   }
   return (
-    <div className="">
+    <div className="mt-3">
       {Object.keys(newComment).length > 0 && showNewComment && (
         <div className="flex items-center gap-3 ">
           <Link to={`/profile/${userId}`} className="font-medium">
