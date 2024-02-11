@@ -78,6 +78,7 @@ const PostStats = ({
 
   const handleSaved = async () => {
     const savedPosts = userData.savedPosts;
+
     if (isSaved) {
       // remove the post from the savedPosts of the user
       setIsSaved(false);

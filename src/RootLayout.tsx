@@ -52,6 +52,10 @@ const RootLayout = () => {
       console.log(
         `Error on getting the current logged in user :: APPWRITE :: ${error}`
       );
+      setUserData(INITIAL_USER);
+      setIsAuthenticated(false);
+      navigate("/sign-in");
+
       throw new Error((error as Error).message);
     } finally {
       setIsLoading(false);
