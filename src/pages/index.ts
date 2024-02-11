@@ -11,6 +11,8 @@ const Explore = lazy(() => import("./Explore"));
 const EditProfile = lazy(() => import("./EditProfile"));
 const ProfilePosts = lazy(() => import("./ProfilePosts"));
 const LikedPosts = lazy(() => import("./LikedPosts"));
+import NotFound from "./NotFound";
+import Error from "./Error";
 
 export {
   Home,
@@ -24,4 +26,6 @@ export {
   EditProfile,
   LikedPosts,
   ProfilePosts,
+  NotFound,
+  Error,
 };

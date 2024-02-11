@@ -13,9 +13,11 @@ import {
   CreatePost,
   EditPost,
   EditProfile,
+  Error,
   Explore,
   Home,
   LikedPosts,
+  NotFound,
   Post,
   Profile,
   ProfilePosts,
@@ -28,7 +30,7 @@ import { QueryProvider } from "./react-query/QueryProvider";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route>
+    <Route errorElement={<Error />}>
       <Route element={<AuthLayout />}>
         <Route path="sign-in" element={<SignInForm />} />
         <Route path="sign-up" element={<SignUpForm />} />
@@ -49,6 +51,7 @@ const router = createBrowserRouter(
         <Route path="edit-profile/:id" element={<EditProfile />} />
         <Route path="post/:id" element={<Post />} />
       </Route>
+      <Route path="*" element={<NotFound />} />
     </Route>
   )
 );

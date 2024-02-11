@@ -50,7 +50,7 @@ const ProfileUserCard = ({
           fullname={user?.fullname}
           username={user?.username}
           profilePicture={user?.profilePicture}
-          className="w-10 h-10 rounded-full"
+          className="w-10 h-10 rounded-full overflow-hidden"
         />
         <div>
           <h4 className="font-semibold cursor-pointer">{user?.username}</h4>

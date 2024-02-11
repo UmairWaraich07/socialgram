@@ -157,6 +157,7 @@ class ConfigService {
         [Query.equal("post", postId)]
       );
       if (likes) {
+        console.log({ likes });
         return likes;
       } else {
         throw new Error("Failed to get post likes!");

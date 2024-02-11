@@ -35,7 +35,9 @@ const PostStats = ({
 
   useEffect(() => {
     // loop through the collection of likes of that post and check if this user liked it or not
-    likes?.documents.map((doc) => doc.user.$id === userId && setIsLiked(true));
+    likes?.documents.map(
+      (doc) => doc.user.$id === userData.id && setIsLiked(true)
+    );
 
     userData &&
       userData?.savedPosts?.map(
@@ -47,7 +49,7 @@ const PostStats = ({
     if (isLiked) {
       // remove the like
       const foundRecord = likes?.documents.find(
-        (doc) => doc.user.$id === userId
+        (doc) => doc.user.$id === userData.id
       );
       const likeRecordId = foundRecord ? foundRecord.$id : "";
       // delete the document with this user and post Id
@@ -63,7 +65,7 @@ const PostStats = ({
     } else {
       // add the doucment with this user and postId
       setIsLiked(true);
-      const res = await addLike({ postId, userId });
+      const res = await addLike({ postId, userId: userData.id });
       if (!res) {
         setIsLiked(false);
         toast("Liked action failed.");
@@ -80,7 +82,7 @@ const PostStats = ({
       // remove the post from the savedPosts of the user
       setIsSaved(false);
       const res = await removeFromSaved({
-        userId,
+        userId: userData.id,
         postId,
         savedPosts: savedPosts ? savedPosts : [],
       });
@@ -99,7 +101,7 @@ const PostStats = ({
       // add the post to the savedPosts of the user
       setIsSaved(true);
       const res = await addToSaved({
-        userId,
+        userId: userData.id,
         postId,
         savedPosts: savedPosts ? savedPosts : [],
       });
