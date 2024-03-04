@@ -52,9 +52,9 @@ export const timeAgoComments = (dateString: string): string => {
   } else if (hours < 24) {
     return `${hours}h ago`;
   } else if (days === 1) {
-    return "1h ago";
+    return "1d ago";
   } else {
-    return `${days}h ago`;
+    return `${days}d ago`;
   }
 };
 

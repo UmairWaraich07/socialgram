@@ -36,12 +36,12 @@ const PostStats = ({
   useEffect(() => {
     // loop through the collection of likes of that post and check if this user liked it or not
     likes?.documents.map(
-      (doc) => doc.user.$id === userData.id && setIsLiked(true)
+      (doc) => doc?.user?.$id === userData.id && setIsLiked(true)
     );
 
     userData &&
       userData?.savedPosts?.map(
-        (post: Models.Document) => post.$id === postId && setIsSaved(true)
+        (post: Models.Document) => post?.$id === postId && setIsSaved(true)
       );
   }, [postId, userData, likes, userId]);
 

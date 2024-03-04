@@ -19,6 +19,17 @@ import {
 import { Models } from "appwrite";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 const Post = () => {
   const { id: postId } = useParams();
@@ -132,18 +143,42 @@ const Post = () => {
                     />
                   </Link>
 
-                  <Button
-                    onClick={handleDeletePost}
-                    variant="ghost"
-                    className="post_details-delete_btn "
-                  >
-                    <img
-                      src={"/assets/icons/delete.svg"}
-                      alt="delete"
-                      width={24}
-                      height={24}
-                    />
-                  </Button>
+                  <AlertDialog>
+                    <AlertDialogTrigger>
+                      <Button
+                        variant="ghost"
+                        className="post_details-delete_btn "
+                      >
+                        <img
+                          src={"/assets/icons/delete.svg"}
+                          alt="delete"
+                          width={24}
+                          height={24}
+                        />
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent className="bg-dark-3 rounded-xl border border-dark-4">
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>
+                          Are you absolutely sure?
+                        </AlertDialogTitle>
+                        <AlertDialogDescription>
+                          This action cannot be undone. This will permanently
+                          delete your post and remove your post data from our
+                          servers.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={handleDeletePost}
+                          className="bg-red border"
+                        >
+                          Continue
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                 </div>
               )}
             </div>
